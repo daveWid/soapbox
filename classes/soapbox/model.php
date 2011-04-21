@@ -109,6 +109,26 @@ class Soapbox_Model extends Kohana_Model
 	}
 
 	/**
+	 * Fetches rows.
+	 *
+	 * @param	int	The number to fetch
+	 * @param	int	Offet
+	 * @return	Database_Result
+	 */
+	public function fetch($num = null, $offset = 0)
+	{
+		$query = DB::select()->from($this->table)->order_by($this->primary, 'DESC');
+
+		// Check to see if only a number of posts are requested, or all...
+		if ($num !== null)
+		{
+			$query = $query->limit($num)->offset($offset);
+		}
+
+		return $query->as_object()->execute();
+	}
+
+	/**
 	 * Checks to see if the passed in data
 	 *
 	 * @param	array	The data to validate against.
