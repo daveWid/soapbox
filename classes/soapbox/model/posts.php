@@ -25,32 +25,27 @@ class Soapbox_Model_Posts extends Soapbox_Model
 	/**
 	 * Gets a number of recent posts
 	 *
-	 * @throws	Database_Exception
-	 *
 	 * @param	int	The number of posts to get
 	 * @param	int	The offset number
 	 * @return	Databse_Result	The posts objects
 	 */
-	public function get_posts($num, $offset = 0)
+	public function get_posts($num = null, $offset = 0)
 	{
-		$result = $this->get_select()
-			->limit($num)
-			->offset($offset)
-			->as_object()
-			->execute();
+		$result = $this->get_select();
 
-		if (count($result) === 0)
+		// Check to see if only a number of posts are requested, or all...
+		if ($num !== null)
 		{
-			throw new Database_Exception(204, "No Content");
+			$result = $result->limit($num)->offset($offset);
 		}
+
+		$result = $result->as_object()->execute();
 
 		return $result;
 	}
 
 	/**
 	 * Get the posts from a category.
-	 *
-	 * @throws	Database_Exception
 	 *
 	 * @param	string	The slug of the category to look for
 	 * @param	int	The number of posts
@@ -65,11 +60,6 @@ class Soapbox_Model_Posts extends Soapbox_Model
 			->where("categories.slug", "=", $slug)
 			->as_object()
 			->execute();
-
-		if (count($result) === 0)
-		{
-			throw new Database_Exception(204, "No Content");
-		}
 
 		return $result;
 	}
@@ -89,12 +79,7 @@ class Soapbox_Model_Posts extends Soapbox_Model
 			->as_object()
 			->execute();
 
-		if (count($result) === 0)
-		{
-			throw new Database_Exception(204, "No Content");
-		}
-
-		return $result->current();
+		return (count($result) !== 0) ? $result->current() : null;
 	}
 
 	/** {@inheritdoc} */
