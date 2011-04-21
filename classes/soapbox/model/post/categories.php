@@ -20,7 +20,7 @@ class Soapbox_Model_Post_Categories extends Soapbox_Model
 	 * @return	array	The categories
 	 */
 	public function get_post_categories($id)
-	{	
+	{
 		$query = DB::select()
 					->from($this->table)
 					->join('categories')->using('category_id')
@@ -35,7 +35,7 @@ class Soapbox_Model_Post_Categories extends Soapbox_Model
 		else
 		{
 			$result = array();
-			
+
 			foreach ($query as $row)
 			{
 				$result[$row->slug] = $row->display;
@@ -44,7 +44,7 @@ class Soapbox_Model_Post_Categories extends Soapbox_Model
 			return $result;
 		}
 	}
-	
+
 	/** {@inheritdoc} */
 	protected function validation_rules($valid)
 	{
