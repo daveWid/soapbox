@@ -13,23 +13,14 @@ class Soapbox_Model_Posts extends Soapbox_Model
 
 	protected $fields = array('post_id','title','slug','contents','posted_date');
 
-	/** {@inheritdoc} */
-	public function insert(array $data)
-	{
-		// Add in the posted date
-		$data['posted_date'] = date('Y-m-d');
-
-		return parent::insert($data);
-	}
-
 	/**
-	 * Gets a number of recent posts
+	 * Fetches database rows
 	 *
 	 * @param	int	The number of posts to get
 	 * @param	int	The offset number
 	 * @return	Databse_Result	The posts objects
 	 */
-	public function get_posts($num = null, $offset = 0)
+	public function fetch($num = null, $offset = 0)
 	{
 		$result = $this->get_select();
 
@@ -39,9 +30,7 @@ class Soapbox_Model_Posts extends Soapbox_Model
 			$result = $result->limit($num)->offset($offset);
 		}
 
-		$result = $result->as_object()->execute();
-
-		return $result;
+		return $result->as_object()->execute();
 	}
 
 	/**
@@ -87,7 +76,8 @@ class Soapbox_Model_Posts extends Soapbox_Model
 	{
 		return $valid->rule('title', 'not_empty')
 			->rule('slug', 'not_empty')
-			->rule('contents', 'not_empty');
+			->rule('contents', 'not_empty')
+			->rule('posted_date', 'not_empty');
 	}
 
 	/**
@@ -101,8 +91,8 @@ class Soapbox_Model_Posts extends Soapbox_Model
 
 		return DB::select($expr)
 			->from($this->table)
-			->join('post_categories')->using('post_id')
-			->join('categories')->using('category_id')
+			->join('post_categories', 'left')->using('post_id')
+			->join('categories', 'left')->using('category_id')
 			->group_by('post_id')
 			->order_by('posted_date', 'DESC');
 	}
