@@ -120,7 +120,7 @@ class Soapbox_Model extends Kohana_Model
 		if ($this->validation === null)
 		{
 			$this->validation = new Validation($data);
-			$this->validation = $this->validation_rules($validation);
+			$this->validation = $this->validation_rules($this->validation);
 		}
 
 		return $this->validation->check();
