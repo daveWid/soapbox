@@ -26,7 +26,9 @@ class Soapbox_Core
 
 		for ($i = 0, $len = count($slugs); $i < $len; $i++)
 		{
-			$categories[] = ($link) ? HTML::anchor("category/".$slugs[$i], $display[$i]) : $display[$i];
+			$categories[] = ($link) ?
+				HTML::anchor(Route::get('soapbox/category')->uri(array('category' => $slugs[$i])), $display[$i]) :
+				$display[$i];
 		}
 
 		return implode($seperator, $categories);
