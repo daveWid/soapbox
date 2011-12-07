@@ -2,11 +2,11 @@
 /**
  * Post Categories Model.
  *
- * @package		Soapbox
- * @author		Dave Widmer
- * @copyright	2011 © Dave Widmer
+ * @package     Soapbox
+ * @author      Dave Widmer <dave@davewidmer.net>
+ * @copyright   2011 © Dave Widmer
  */
-class Soapbox_Model_Post_Categories extends Soapbox_Model
+class Soapbox_Model_Post_Category extends Soapbox_Model
 {
 	public $primary = "post_id";
 	public $table = "post_categories";

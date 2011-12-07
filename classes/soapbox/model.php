@@ -7,7 +7,7 @@
  * @author		Dave Widmer
  * @copyright	2011 © Dave Widmer
  */
-class Soapbox_Model extends Kohana_Model
+abstract class Soapbox_Model extends Model
 {
 	/**
 	 * @var	String	The Database table name

@@ -1,12 +1,12 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 /**
- * Blog Posts Model.
+ * Blog Post Model.
  *
- * @package		Soapbox
- * @author		Dave Widmer
- * @copyright	2011 © Dave Widmer
+ * @package     Soapbox
+ * @author      Dave Widmer <dave@davewidmer.net>
+ * @copyright   2011 © Dave Widmer
  */
-class Soapbox_Model_Posts extends Soapbox_Model
+class Soapbox_Model_Post extends Soapbox_Model
 {
 	public $primary = "post_id";
 	public $table = "posts";
