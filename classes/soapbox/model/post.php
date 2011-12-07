@@ -71,17 +71,18 @@ class Soapbox_Model_Post extends Soapbox_Model
 	}
 
 	/**
-	 * Gets a post from a slug.
+	 * Gets a post from a slug and date
 	 *
 	 * @param	string	The post slug
 	 * @param	string	The date
 	 * @return	Database_Result	The result
 	 */
-	public function get_post($slug, $date)
+	public static function get_post($slug, $date)
 	{
-		$result = $this->get_select()
-			->where(self::$table.".slug", "=", $slug)
-			->where(self::$table.".posted_date", "LIKE", "{$date}%")
+		$result = DB::select()
+			->from(static::$table)
+			->where(static::$table.".slug", "=", $slug)
+			->where(static::$table.".posted_date", "LIKE", "{$date}%")
 			->as_object()
 			->execute();
 

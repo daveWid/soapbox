@@ -55,7 +55,17 @@ class Soapbox_Controller extends Controller_Template
 	 */
 	public function action_post()
 	{
-		die('Here is where you will show a single post');
+		$r = $this->request;
+
+		$post = Model_Post::get_post($r->param('slug'), "{$r->param('year')}-{$r->param('month')}");
+
+		if ($post === null)
+		{
+			$this->request->redirect(Route::get('soapbox/404')->uri()); // 404 if no post
+		}
+
+		$this->template->title = $this->_config['title']." :: ".$post->title;
+		$this->template->content = View::factory('soapbox/post')->set((array) $post);
 	}
 
 }
