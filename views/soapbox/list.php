@@ -5,5 +5,5 @@
 <?php
 foreach ($posts as $post)
 {
-	echo View::factory('soapbox/post')->set((array) $post);
+	echo View::factory('soapbox/post')->set((array) $post)->set('is_list', true);
 }
