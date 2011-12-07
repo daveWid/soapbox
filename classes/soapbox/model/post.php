@@ -8,21 +8,38 @@
  */
 class Soapbox_Model_Post extends Soapbox_Model
 {
-	public $primary = "post_id";
-	public $table = "posts";
+	/**
+	 * @var   string   Table name
+	 */
+	public static $table = "post";
 
+	/**
+	 * @var   string   The name of the primary key
+	 */
+	public static $primary = "post_id";
+
+	/**
+	 * @var   array    The fields in this table
+	 */
 	protected $fields = array('post_id','title','slug','contents','posted_date');
 
 	/**
 	 * Fetches database rows
 	 *
-	 * @param	int	The number of posts to get
-	 * @param	int	The offset number
-	 * @return	Databse_Result	The posts objects
+	 * @param   int	      The number of posts to get
+	 * @param   int       The page
+	 * @return Databse_Result
 	 */
 	public function fetch($num = null, $offset = 0)
 	{
-		$result = $this->get_select();
+		$result = DB::select()
+			->from(static::$table)
+			->order_by('posted_date', 'DESC')
+			->as_object();
+
+		// Since this is a blog you will be getting a page number
+		// we need to convert to an offset MySQL can use
+		$offset = ($offset - 1) * $num;
 
 		// Check to see if only a number of posts are requested, or all...
 		if ($num !== null)
@@ -30,7 +47,7 @@ class Soapbox_Model_Post extends Soapbox_Model
 			$result = $result->limit($num)->offset($offset);
 		}
 
-		return $result->as_object()->execute();
+		return $result->execute();
 	}
 
 	/**
@@ -63,15 +80,20 @@ class Soapbox_Model_Post extends Soapbox_Model
 	public function get_post($slug, $date)
 	{
 		$result = $this->get_select()
-			->where("posts.slug", "=", $slug)
-			->where("posts.posted_date", "LIKE", "{$date}%")
+			->where(self::$table.".slug", "=", $slug)
+			->where(self::$table.".posted_date", "LIKE", "{$date}%")
 			->as_object()
 			->execute();
 
 		return (count($result) !== 0) ? $result->current() : null;
 	}
 
-	/** {@inheritdoc} */
+	/**
+	 * Gets the validation rules for a blog post
+	 *
+	 * @param   Validation  $valid   The current validation object
+	 * @return  Validation
+	 */
 	protected function validation_rules($valid)
 	{
 		return $valid->rule('title', 'not_empty')
@@ -87,13 +109,8 @@ class Soapbox_Model_Post extends Soapbox_Model
 	 */
 	private function get_select()
 	{
-		$expr = DB::expr("`posts`.*,GROUP_CONCAT(`categories`.`slug`) AS 'category_slugs',GROUP_CONCAT(`categories`.`display`) AS 'category_display'");
-
-		return DB::select($expr)
-			->from($this->table)
-			->join('post_categories', 'left')->using('post_id')
-			->join('categories', 'left')->using('category_id')
-			->group_by('post_id')
+		return DB::select()
+			->from(static::$table)
 			->order_by('posted_date', 'DESC');
 	}
 

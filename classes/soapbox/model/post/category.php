@@ -8,47 +8,84 @@
  */
 class Soapbox_Model_Post_Category extends Soapbox_Model
 {
-	public $primary = "post_id";
-	public $table = "post_categories";
+	/**
+	 * @var   string    The primary key for this table
+	 */
+	public static $primary = "post_id";
 
+	/**
+	 * @var   string    The table name
+	 */
+	public static $table = "post_category";
+
+	/**
+	 * @var   array     The list of columns in this table
+	 */
 	protected $fields = array('post_id', 'category_id');
 
 	/**
 	 * Gets all of the categories from the given post.
 	 *
-	 * @param	int	The post id
-	 * @return	array	The categories
+	 * @param    int    The post id
+	 * @return   array  The categories
 	 */
-	public function get_post_categories($id)
+	public static function post_categories($id)
 	{
-		$query = DB::select()
-					->from($this->table)
-					->join('categories')->using('category_id')
-					->where('post_id', '=', $id)
-					->as_object()
-					->execute();
+		$result = DB::select()
+			->from(self::$table)
+			->join(Model_Category::$table)->using(Model_Category::$primary)
+			->where(self::$primary, '=', $id)
+			->as_object()
+			->execute();
 
-		if (count($query) === 0)
+		$categories = array();
+
+		foreach ($result as $row)
 		{
-			return array();
-		}
-		else
-		{
-			$result = array();
+			$tmp = array(
+				'display' => $row->display,
+				'slug' => $row->slug
+			);
 
-			foreach ($query as $row)
-			{
-				$result[$row->slug] = $row->display;
-			}
-
-			return $result;
+			$categories[] = (object) $tmp;
 		}
+
+		return $categories;
 	}
 
-	/** {@inheritdoc} */
+	/**
+	 * Makes a category into a clickable link.
+	 *
+	 * @param   array    $category    A category array you want to make a link out of
+	 * @param   string   $delimiter   The category delimiter
+	 * @return  string
+	 */
+	public static function link(array $category, $delimiter = ", ")
+	{
+		$links = array();
+		$route = Route::get('soapbox/category');
+
+		foreach ($category as $row)
+		{
+			$links[] = HTML::anchor(
+				$route->uri(array('category' => $row->slug)),
+				$row->display
+			);
+		}
+
+		return implode($delimiter, $links);
+	}
+
+	/**
+	 * Gets the validation rules for a post category
+	 *
+	 * @param   Validation   $valid   The current validation object
+	 * @return  Validation
+	 */
 	protected function validation_rules($valid)
 	{
 		return $valid->rule('post_id', 'not_empty')
 			->rule('category_id', 'not_empty');
 	}
+
 }

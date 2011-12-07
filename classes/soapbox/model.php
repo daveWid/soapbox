@@ -12,12 +12,12 @@ abstract class Soapbox_Model extends Model
 	/**
 	 * @var	String	The Database table name
 	 */
-	public $table;
+	public static $table;
 
 	/**
 	 * @var String	The primary key.
 	 */
-	public $primary;
+	public static $primary;
 
 	/**
 	 * @var Validation	The validation object
@@ -46,7 +46,7 @@ abstract class Soapbox_Model extends Model
 
 		$data = $this->filter($data);
 
-		return DB::insert($this->table)
+		return DB::insert(static::$table)
 				->columns(array_keys($data))
 				->values(array_values($data))
 				->execute();
@@ -61,8 +61,8 @@ abstract class Soapbox_Model extends Model
 	public function read($key)
 	{
 		$result = DB::select()
-			->from($this->table)
-			->where($this->primary, '=', $key)
+			->from(static::$table)
+			->where(static::$primary, '=', $key)
 			->as_object()
 			->execute();
 
@@ -89,8 +89,8 @@ abstract class Soapbox_Model extends Model
 
 		$data = $this->filter($data);
 
-		return DB::update($this->table)
-				->where($this->primary, '=', $key)
+		return DB::update(static::$table)
+				->where(static::$primary, '=', $key)
 				->set($data)
 				->execute();
 	}
@@ -103,8 +103,8 @@ abstract class Soapbox_Model extends Model
 	 */
 	public function delete($key)
 	{
-		return DB::delete($this->table)
-				->where($this->primary, '=', $key)
+		return DB::delete(static::$table)
+				->where(static::$primary, '=', $key)
 				->execute();
 	}
 
@@ -117,7 +117,7 @@ abstract class Soapbox_Model extends Model
 	 */
 	public function fetch($num = null, $offset = 0)
 	{
-		$query = DB::select()->from($this->table)->order_by($this->primary, 'DESC');
+		$query = DB::select()->from(static::$table)->order_by(static::$primary, 'DESC');
 
 		// Check to see if only a number of posts are requested, or all...
 		if ($num !== null)
@@ -173,9 +173,6 @@ abstract class Soapbox_Model extends Model
 	 * @param	Validation	A validation object
 	 * @return	Validation	The validtion object with the rules added
 	 */
-	protected function validation_rules($valid)
-	{
-		return $valid; // In extended classes add more rules...
-	}
+	abstract protected function validation_rules($valid);
 
 }
