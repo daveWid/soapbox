@@ -2,11 +2,12 @@
 
 $section = trim(Kohana::$config->load('soapbox')->section);
 
-// View all posts route
-Route::set('soapbox', $section)
+// Main soapbox route
+Route::set('soapbox', "{$section}(/page/<page>)", array('page' => "\d"))
 	->defaults(array(
 		'controller' => "soapbox",
 		'action' => "index",
+		'page' => 1
 	));
 
 /** Setting default routes for the soapbox */
@@ -23,7 +24,7 @@ Route::set('soapbox/post', "{$section}/<year>/<month>/<slug>", array(
 		'slug'	=> null,
 	));
 
-Route::set('soapbox/category', "{$section}category/<category>", array('category' => ".*"))
+Route::set('soapbox/category', "{$section}/category/<category>", array('category' => ".*"))
 	->defaults(array(
 		'controller' => "soapbox",
 		'action'	=> "category",
