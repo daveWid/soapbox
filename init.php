@@ -1,35 +1,32 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
-$config = Kohana::config('soapbox');
+$section = trim(Kohana::$config->load('soapbox')->section);
 
-// If there is a section we need to add a slash for routing
-$config->slash = ($config->section) ? $config->section."/" : "";
+// View all posts route
+Route::set('soapbox', $section)
+	->defaults(array(
+		'controller' => "soapbox",
+		'action' => "index",
+	));
 
 /** Setting default routes for the soapbox */
-Route::set('soapbox/post', "{$config->slash}<year>/<month>/<slug>", array(
+Route::set('soapbox/post', "{$section}/<year>/<month>/<slug>", array(
 		'year' => "\d{4}",
 		'month' => "\d{2}",
 		'slug' => ".*"
 	))
 	->defaults(array(
-		'controller' => $config->controller,
-		'action'	=> $config->action['post'],
+		'controller' => "soapbox",
+		'action'	=> "post",
 		'year'	=> null,
 		'month'	=> null,
 		'slug'	=> null,
 	));
 
-Route::set('soapbox/category', "{$config->slash}category/<category>", array('category' => ".*"))
+Route::set('soapbox/category', "{$section}category/<category>", array('category' => ".*"))
 	->defaults(array(
-		'controller' => $config->controller,
-		'action'	=> $config->action['category'],
+		'controller' => "soapbox",
+		'action'	=> "category",
 	));
 
-
-Route::set('soapbox', $config->section)
-	->defaults(array(
-		'controller' => $config->controller,
-		'action' => $config->action['home'],
-	));
-
-unset($config);
+unset($section);
