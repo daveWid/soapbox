@@ -53,17 +53,17 @@ class Soapbox_Model_Post extends Soapbox_Model
 	/**
 	 * Get the posts from a category.
 	 *
-	 * @param	string	The slug of the category to look for
-	 * @param	int	The number of posts
-	 * @param	int	The offset number
-	 * @return	Database_Result	The results
+	 * @param	string     The slug of the category to look for
+	 * @return	Database_Result
 	 */
-	public function get_category($slug, $num, $offset)
+	public static function in_category($slug)
 	{
-		$result = $this->get_select()
-			->limit($num)
-			->offset($offset)
-			->where("categories.slug", "=", $slug)
+		$result = DB::select()
+			->from(static::$table)
+			->join(Model_Post_Category::$table)->using(static::$primary)
+			->join(Model_Category::$table)->using(Model_Category::$primary)
+			->where(Model_Category::$table.".slug", "=", $slug)
+			->order_by('posted_date', 'DESC')
 			->as_object()
 			->execute();
 

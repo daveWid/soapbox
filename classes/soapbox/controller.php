@@ -41,7 +41,13 @@ class Soapbox_Controller extends Controller_Template
 	 */
 	public function action_category()
 	{
-		die('This is where you will show a list of posts with the given category');
+		$slug = $this->request->param('category');
+
+		$this->template->title = $this->_config['title']." :: ".$slug;
+		$this->template->content = View::factory('soapbox/list')->set(array(
+			'title' => $slug,
+			'posts' => Model_Post::in_category($slug),
+		));
 	}
 
 	/**
