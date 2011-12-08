@@ -24,6 +24,46 @@ class Soapbox_Model_Post extends Soapbox_Model
 	protected $fields = array('post_id','title','slug','content','posted_date');
 
 	/**
+	 * Creates a new recored.
+	 *
+	 * @param   array    $data    The data to add
+	 * @return  array             array [0] insert id, [1] affected rows
+	 */
+	public function create(array $data)
+	{
+		$data['posted_date'] = date("Y-m-d H:i:s");
+		$data['slug'] = str_replace(" ", "-", strtolower(trim($data['title'])));
+
+		return parent::create($data);
+	}
+
+	/**
+	 * Updates a blog post.
+	 *
+	 * @param   int    $key    Post id
+	 * @param   array  $data   The update data
+	 * @return  int            Affected rows
+	 */
+	public function update($key, array $data)
+	{
+		$data['slug'] = str_replace(" ", "-", strtolower(trim($data['title'])));
+		return parent::update($key, $data);
+	}
+
+	/**
+	 * Deletes a post and clears out the categories as well.
+	 *
+	 * @param   int   $key    The primary key value for the post to delete
+	 * @return  int           The number of affected rows
+	 */
+	public function delete($key)
+	{
+		// The first step of this function deletes the categories
+		Model_Post_Category::set_post($key, array());
+		return parent::delete($key);
+	}
+
+	/**
 	 * Fetches database rows
 	 *
 	 * @param   int	      The number of posts to get
@@ -156,6 +196,24 @@ class Soapbox_Model_Post extends Soapbox_Model
 			'month' => Date::formatted_time($post->posted_date, "m"),
 			'slug' => $post->slug
 		));
+	}
+
+	/**
+	 * Validates a new post.
+	 *
+	 * @param   array   $data    The posted data to validate
+	 * @return  boolean
+	 */
+	public function validate_new(array $data)
+	{
+		// Setup a new validation instance if this one doesn't exist.
+		if ($this->validation === null)
+		{
+			$this->validation = new Validation($data);
+			$this->validation->rule('title', 'not_empty')->rule('content', 'not_empty');
+		}
+
+		return $this->validation->check();
 	}
 
 	/**

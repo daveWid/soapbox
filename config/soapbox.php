@@ -17,4 +17,8 @@ return array
 	// How many posts per page
 	'per_page' => 10,
 
+	// The name of the admin route. You can change this to make it harder to
+	// guess for curious visitors
+	'admin' => "admin",
+
 );

@@ -43,6 +43,7 @@ class Soapbox_Model_Post_Category extends Soapbox_Model
 		foreach ($result as $row)
 		{
 			$tmp = array(
+				'category_id' => $row->category_id,
 				'display' => $row->display,
 				'slug' => $row->slug
 			);
@@ -51,6 +52,56 @@ class Soapbox_Model_Post_Category extends Soapbox_Model
 		}
 
 		return $categories;
+	}
+
+	/**
+	 * Gets the categories a post has by category ids.
+	 *
+	 * @param   int    $id    The post id
+	 * @return  array
+	 */
+	public static function post_category_ids($id)
+	{
+		$list = array();
+
+		foreach(static::post_categories($id) as $row)
+		{
+			$list[] = $row->category_id;
+		}
+
+		return $list;
+	}
+
+	/**
+	 * Sets the categories for the given post.
+	 *
+	 * @param   type    $id           The post id
+	 * @param   array   $categories   The categories to add
+	 * @return  int                   The number of affected rows
+	 */
+	public static function set_post($id, array $categories)
+	{
+		// Clear any categories
+		DB::delete(static::$table)
+			->where(Model_Post::$primary, '=', $id)
+			->execute();
+
+		$num = 0;
+
+		if (count($categories) > 0)
+		{
+			$query = DB::insert(static::$table)
+				->columns(array('post_id', 'category_id'));
+
+			foreach ($categories as $value)
+			{
+				$query->values(array($id, $value));
+			}
+
+			$num = $query->execute();
+		}
+
+		return $num;
 	}
 
 	/**

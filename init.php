@@ -1,16 +1,28 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
-$section = trim(Kohana::$config->load('soapbox')->section);
+$config = Kohana::$config->load('soapbox');
+$section = trim($config->section, "/");
+$admin = trim($config->admin, "/");
 
-// Main soapbox route
-Route::set('soapbox', "{$section}(/page/<page>)", array('page' => "\d"))
+// Admin
+Route::set('soapbox/admin', "{$section}/{$admin}(/<action>(/<id>))", array(
+		'action' => "(|add|edit|delete)",
+		'id' => "\d+"
+	))
 	->defaults(array(
+		'directory' => "admin",
 		'controller' => "soapbox",
 		'action' => "index",
-		'page' => 1
+		'id' => null
 	));
 
-/** Setting default routes for the soapbox */
+// Login
+Route::set('soapbox/login', "{$section}/<action>", array('action' => "(login|logout)"))
+	->defaults(array(
+		'controller' => "soapbox",
+	));
+
+// Single Post
 Route::set('soapbox/post', "{$section}/<year>/<month>/<slug>", array(
 		'year' => "\d{4}",
 		'month' => "\d{2}",
@@ -46,4 +58,4 @@ Route::set('soapbox/404', "{$section}/404")
 		'action' => "404"
 	));
 
-unset($section);
+unset($config, $section, $admin);
