@@ -37,3 +37,5 @@
 <?php endforeach; ?>
 	</tbody>
 </table>
+
+<p><?php echo HTML::anchor(Route::get('soapbox/admin/category')->uri(array('index' => false)), "Category Management →"); ?></p>

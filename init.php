@@ -16,6 +16,18 @@ Route::set('soapbox/admin', "{$section}/{$admin}(/<action>(/<id>))", array(
 		'id' => null
 	));
 
+// Admin categories
+Route::set('soapbox/admin/category', "{$section}/{$admin}/category(/<action>(/<id>))", array(
+		'action' => "(|add|edit|delete)",
+		'id' => "\d+"
+	))
+	->defaults(array(
+		'directory' => "admin",
+		'controller' => "soapbox_category",
+		'action' => "index",
+		'id' => null
+	));
+
 // Login
 Route::set('soapbox/login', "{$section}/<action>", array('action' => "(login|logout)"))
 	->defaults(array(

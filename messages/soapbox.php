@@ -16,4 +16,8 @@ return array(
 	'edit' => array(
 		'success' => "Your post has been saved!"
 	),
+
+	'category' => array(
+		'display_empty' => "Please enter the category name"
+	),
 );

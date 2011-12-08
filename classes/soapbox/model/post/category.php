@@ -128,6 +128,19 @@ class Soapbox_Model_Post_Category extends Soapbox_Model
 	}
 
 	/**
+	 * Removes all of the rows with the given category id.
+	 *
+	 * @param   int   $id    The category_id to remove
+	 * @return  int          The number of affected rows
+	 */
+	public static function remove_category($id)
+	{
+		return DB::delete(static::$table)
+			->where(Model_Category::$primary, '=', $id)
+			->execute();
+	}
+
+	/**
 	 * Gets the validation rules for a post category
 	 *
 	 * @param   Validation   $valid   The current validation object

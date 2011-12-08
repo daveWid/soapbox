@@ -24,6 +24,43 @@ class Soapbox_Model_Category extends Soapbox_Model
 	protected $fields = array('category_id','slug','display');
 
 	/**
+	 * Creates a new category.
+	 *
+	 * @param   array   $data   The posted data
+	 * @return  array           array [0] insert id [1] number of rows
+	 */
+	public function create(array $data)
+	{
+		$data['slug'] = str_replace(" ", "-", strtolower(trim($data['display'])));
+		return parent::create($data);
+	}
+
+	/**
+	 * Creates a new category.
+	 *
+	 * @param   int     $key    The category id
+	 * @param   array   $data   The posted data
+	 * @return  array           array [0] insert id [1] number of rows
+	 */
+	public function update($key, array $data)
+	{
+		$data['slug'] = str_replace(" ", "-", strtolower(trim($data['display'])));
+		return parent::update($key, $data);
+	}
+
+	/**
+	 * Removes the category id with the given category id
+	 *
+	 * @param   int   $key    The post id
+	 * @return  boolean       the number of affected rows
+	 */
+	public function delete($key)
+	{
+		Model_Post_Category::remove_category($key);
+		parent::delete($key);
+	}
+
+	/**
 	 * Sets the validation for a category
 	 *
 	 * @param   Validation   $valid   The current validation object
