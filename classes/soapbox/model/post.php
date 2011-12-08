@@ -58,7 +58,7 @@ class Soapbox_Model_Post extends Soapbox_Model
 	 */
 	public static function in_category($slug)
 	{
-		$result = DB::select()
+		$result = DB::select(static::$table.".*")
 			->from(static::$table)
 			->join(Model_Post_Category::$table)->using(static::$primary)
 			->join(Model_Category::$table)->using(Model_Category::$primary)
