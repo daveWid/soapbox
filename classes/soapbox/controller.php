@@ -114,7 +114,7 @@ class Soapbox_Controller extends Controller_Template
 		}
 		else
 		{
-			Session::instance()->set('soapbox-error', "Incorrect Login");
+			Session::instance()->set('soapbox-error', Kohana::message('soapbox', 'login.incorrect'));
 		}
 	}
 
