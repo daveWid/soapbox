@@ -12,7 +12,7 @@ CREATE TABLE `post` (
   `post_id` int(10) unsigned NOT NULL auto_increment,
   `title` varchar(255) NOT NULL,
   `slug` varchar(255) NOT NULL,
-  `contents` text NOT NULL,
+  `content` text NOT NULL,
   `posted_date` date NOT NULL,
   PRIMARY KEY  (`post_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;

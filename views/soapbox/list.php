@@ -6,7 +6,7 @@
 foreach ($posts as $post):
 
 $link = Model_Post::permalink($post);
-list($truncated, $more) = Model_Post::truncate($post->contents, "<p>", "</p>");
+list($truncated, $more) = Model_Post::truncate($post->content, "<p>", "</p>");
 
 ?>
 

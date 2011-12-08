@@ -21,7 +21,7 @@ class Soapbox_Model_Post extends Soapbox_Model
 	/**
 	 * @var   array    The fields in this table
 	 */
-	protected $fields = array('post_id','title','slug','contents','posted_date');
+	protected $fields = array('post_id','title','slug','content','posted_date');
 
 	/**
 	 * Fetches database rows
@@ -168,7 +168,7 @@ class Soapbox_Model_Post extends Soapbox_Model
 	{
 		return $valid->rule('title', 'not_empty')
 			->rule('slug', 'not_empty')
-			->rule('contents', 'not_empty')
+			->rule('content', 'not_empty')
 			->rule('posted_date', 'not_empty');
 	}
 
