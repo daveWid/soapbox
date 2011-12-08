@@ -90,6 +90,22 @@ class Soapbox_Model_Post extends Soapbox_Model
 	}
 
 	/**
+	 * Truncates the content using a <!-- more --> tag in the content.
+	 *
+	 * @param   string   $content   The content to truncate
+	 * @return  array               array (text "string", is there more text? "boolean")
+	 */
+	public static function truncate($content)
+	{
+		$result = preg_split("/<!-- more -->/i", $content);
+
+		return array(
+			$result[0],
+			count($result) > 1
+		);
+	}
+
+	/**
 	 * Gets the validation rules for a blog post
 	 *
 	 * @param   Validation  $valid   The current validation object
