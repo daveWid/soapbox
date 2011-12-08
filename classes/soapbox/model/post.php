@@ -106,6 +106,57 @@ class Soapbox_Model_Post extends Soapbox_Model
 	}
 
 	/**
+	 * Get the previous post.
+	 *
+	 * @param   int   $id   The id of the post
+	 * @return  mixed       The stdClass of the row OR false if not found
+	 */
+	public static function get_previous($id)
+	{
+		$result = DB::select()
+			->from(static::$table)
+			->where(static::$primary, "<", $id)
+			->limit(1)
+			->as_object()
+			->execute();
+
+		return (count($result) === 1) ? $result->current() : false;
+	}
+
+	/**
+	 * Get the next post.
+	 *
+	 * @param   int   $id   The id of the post
+	 * @return  mixed       The stdClass of the row OR null if not found
+	 */
+	public static function get_next($id)
+	{
+		$result = DB::select()
+			->from(static::$table)
+			->where(static::$primary, ">", $id)
+			->limit(1)
+			->as_object()
+			->execute();
+
+		return (count($result) === 1) ? $result->current() : false;
+	}
+
+	/**
+	 * Gets the permalink url to a post.
+	 *
+	 * @param   object   $post    The post object to permalink.
+	 * @param   string            The full url to the post
+	 */
+	public static function permalink($post)
+	{
+		return Route::url('soapbox/post', array(
+			'year' => Date::formatted_time($post->posted_date, "Y"),
+			'month' => Date::formatted_time($post->posted_date, "m"),
+			'slug' => $post->slug
+		));
+	}
+
+	/**
 	 * Gets the validation rules for a blog post
 	 *
 	 * @param   Validation  $valid   The current validation object

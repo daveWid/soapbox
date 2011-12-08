@@ -5,12 +5,7 @@
 <?php
 foreach ($posts as $post):
 
-$link = Route::url('soapbox/post', array(
-	'year' => Date::formatted_time($post->posted_date, "Y"),
-	'month' => Date::formatted_time($post->posted_date, "m"),
-	'slug' => $post->slug
-));
-
+$link = Model_Post::permalink($post);
 list($truncated, $more) = Model_Post::truncate($post->contents, "<p>", "</p>");
 
 ?>

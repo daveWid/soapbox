@@ -7,4 +7,12 @@
 	<div class="contents"><?php echo $contents; ?></div>
 
 	<!-- Put in next/previous post navigation -->
+	<ul id="next-previous">
+<?php if($previous = Model_Post::get_previous($post_id)): ?>
+		<li id="previous-post"><a href="<?php echo Model_Post::permalink($previous); ?>">← <?php echo $previous->title; ?></a></li>
+<?php endif; ?>
+<?php if ($next = Model_Post::get_next($post_id)): ?>
+		<li id="next-post"><a href="<?php echo Model_Post::permalink($next); ?>"><?php echo $next->title; ?> →</a></li>
+<?php endif; ?>
+	</ul>
 </article>
