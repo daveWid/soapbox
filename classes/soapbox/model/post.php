@@ -34,7 +34,8 @@ class Soapbox_Model_Post extends Soapbox_Model
 	{
 		$result = DB::select()
 			->from(static::$table)
-			->order_by('posted_date', 'DESC')
+			->order_by('posted_date','DESC')
+			->order_by('post_id', 'DESC')
 			->as_object();
 
 		// Since this is a blog you will be getting a page number
@@ -64,6 +65,7 @@ class Soapbox_Model_Post extends Soapbox_Model
 			->join(Model_Category::$table)->using(Model_Category::$primary)
 			->where(Model_Category::$table.".slug", "=", $slug)
 			->order_by('posted_date', 'DESC')
+			->order_by('post_id', 'DESC')
 			->as_object()
 			->execute();
 
