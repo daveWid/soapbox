@@ -68,4 +68,13 @@ class Soapbox_Controller extends Controller_Template
 		$this->template->content = View::factory('soapbox/post')->set((array) $post);
 	}
 
+	/**
+	 * 404
+	 */
+	public function action_404()
+	{
+		$this->template->title = "Page Not Found";
+		$this->template->content = View::factory('soapbox/404');
+	}
+
 }

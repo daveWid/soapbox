@@ -24,10 +24,26 @@ Route::set('soapbox/post', "{$section}/<year>/<month>/<slug>", array(
 		'slug'	=> null,
 	));
 
+// Category
 Route::set('soapbox/category', "{$section}/category/<category>", array('category' => ".*"))
 	->defaults(array(
 		'controller' => "soapbox",
 		'action'	=> "category",
+	));
+
+// Homepage
+Route::set('soapbox', "{$section}(/page/<page>)", array('page' => "\d"))
+	->defaults(array(
+		'controller' => "soapbox",
+		'action' => "index",
+		'page' => 1
+	));
+
+// 404
+Route::set('soapbox/404', "{$section}/404")
+	->defaults(array(
+		'controller' => "soapbox",
+		'action' => "404"
 	));
 
 unset($section);
