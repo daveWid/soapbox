@@ -77,4 +77,54 @@ class Soapbox_Controller extends Controller_Template
 		$this->template->content = View::factory('soapbox/404');
 	}
 
+	/**
+	 * Login page
+	 */
+	public function action_login()
+	{
+		if ($this->request->method() === "POST")
+		{
+			$this->do_login();
+		}
+
+		// Check for user already
+		if (Auth::instance()->get_user())
+		{
+			$this->request->redirect(Route::get('soapbox/admin')->uri(array('action' => FALSE)));
+		}
+
+		$this->template->title = "Login";
+		$this->template->content = View::factory('soapbox/login')->set(array(
+			'user' => $this->request->post('user'),
+			'action' => URL::site($this->request->uri()),
+			'error' => Session::instance()->get_once('soapbox-error')
+		));
+	}
+
+	/**
+	 * Do the login processing
+	 */
+	protected function do_login()
+	{
+		$post = $this->request->post();
+
+		if (Auth::instance()->login($post['user'], $post['password']))
+		{
+			$this->request->redirect(Route::get('soapbox/admin')->uri(array('action' => false)));
+		}
+		else
+		{
+			Session::instance()->set('soapbox-error', "Incorrect Login");
+		}
+	}
+
+	/**
+	 * Logs a user in.
+	 */
+	public function action_logout()
+	{
+		Auth::instance()->logout();
+		$this->request->redirect(Route::get('soapbox/login')->uri(array('action' => "login")));
+	}
+
 }
