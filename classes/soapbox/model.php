@@ -147,6 +147,17 @@ abstract class Soapbox_Model extends Model
 	}
 
 	/**
+	 * Gets the errors from a failed validation.
+	 *
+	 * @param   string   $file    The file
+	 * @return  array
+	 */
+	public function errors($file = null)
+	{
+		return $this->validation->errors($file);
+	}
+
+	/**
 	 * Runs through the data and makes sure there isn't any data that shouldn't be there.
 	 *
 	 * @param	array	The data to filter
