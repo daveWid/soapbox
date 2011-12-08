@@ -50,8 +50,6 @@ class Soapbox_Controller_Admin extends Controller_Template
 			$this->do_add();
 		}
 
-		$slug = $this->request->param('category');
-
 		$this->template->title = "Administration :: Add Post";
 		$this->template->content = View::factory('soapbox/admin/form')->set(array(
 			'post' => $this->request->post(),
