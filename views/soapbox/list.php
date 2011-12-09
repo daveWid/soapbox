@@ -2,6 +2,8 @@
 <h1><?php echo $title; ?></h1>
 <?php endif; ?>
 
+<?php include "search.php"; ?>
+
 <?php
 foreach ($posts as $post):
 

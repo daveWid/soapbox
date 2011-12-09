@@ -62,6 +62,13 @@ Route::set('soapbox', "{$section}")
 		'action' => "index",
 	));
 
+// Search
+Route::set('soapbox/search', "{$section}/search")
+	->defaults(array(
+		'controller' => "soapbox",
+		'action' => "search",
+	));
+
 // 404
 Route::set('soapbox/404', "{$section}/404")
 	->defaults(array(

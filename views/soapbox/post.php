@@ -1,3 +1,5 @@
+<?php include "search.php"; ?>
+
 <article>
 	<h2><?php echo $title; ?></h2>
 

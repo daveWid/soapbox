@@ -32,7 +32,6 @@ class Soapbox_Controller extends Controller_Template
 
 		$this->template->title = $this->_config['title'];
 		$this->template->content = View::factory('soapbox/list')->set(array(
-			'title' => null,
 			'posts' => Model::factory('post')->fetch($this->_config['per_page'], $page),
 			'page' => $page,
 			'next_page' => Model_Post::has_next_page($page) ? $page + 1 : false,
@@ -74,6 +73,28 @@ class Soapbox_Controller extends Controller_Template
 
 		$this->template->title = $this->_config['title']." :: ".$post->title;
 		$this->template->content = View::factory('soapbox/post')->set((array) $post);
+	}
+
+	/**
+	 * The search action
+	 */
+	public function action_search()
+	{
+		// If there isn't a search query, then just send to homepage
+		$query = $this->request->query('query');
+
+		if ($this->request->query('query') === null)
+		{
+			$this->request->redirect(Route::get('soapbox')->uri());
+		}
+
+		$this->template->title = "Search :: {$query}";
+		$this->template->content = View::factory('soapbox/list')->set(array(
+			'title' => "Search » {$query}",
+			'posts' => Model_Post::search($query),
+			'next_page' => false, // No pagination on search
+			'previous_page' => false,
+		));
 	}
 
 	/**

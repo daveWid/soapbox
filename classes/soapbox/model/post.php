@@ -138,6 +138,24 @@ class Soapbox_Model_Post extends Soapbox_Model
 	}
 
 	/**
+	 * Searches the title/content for the query string.
+	 *
+	 * @param   string   $query   The seach query
+	 * @return  array
+	 */
+	public static function search($query)
+	{
+		return DB::select()
+			->from(static::$table)
+			->or_where('title', 'LIKE', "%{$query}%")
+			->or_where('content', 'LIKE', "%{$query}%")
+			->order_by('posted_date', 'DESC')
+			->order_by(static::$primary, 'DESC')
+			->as_object()
+			->execute();
+	}
+
+	/**
 	 * Truncates the content using a <!-- more --> tag in the content.
 	 *
 	 * @param   string   $content   The content to truncate
