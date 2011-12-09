@@ -56,11 +56,10 @@ Route::set('soapbox/category', "{$section}/category/<category>", array('category
 	));
 
 // Homepage
-Route::set('soapbox', "{$section}(/page/<page>)", array('page' => "\d"))
+Route::set('soapbox', "{$section}")
 	->defaults(array(
 		'controller' => "soapbox",
 		'action' => "index",
-		'page' => 1
 	));
 
 // 404

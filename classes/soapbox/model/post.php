@@ -94,11 +94,15 @@ class Soapbox_Model_Post extends Soapbox_Model
 	/**
 	 * Get the posts from a category.
 	 *
-	 * @param	string     The slug of the category to look for
+	 * @param	string $slug   The slug of the category to look for
+	 * @param   int    $num    The numbner of posts per page
+	 * @param   int    $page   The page
 	 * @return	Database_Result
 	 */
-	public static function in_category($slug)
+	public static function in_category($slug, $num, $page)
 	{
+		$offset = ($page - 1) * $num;
+
 		$result = DB::select(static::$table.".*")
 			->from(static::$table)
 			->join(Model_Post_Category::$table)->using(static::$primary)
@@ -106,6 +110,8 @@ class Soapbox_Model_Post extends Soapbox_Model
 			->where(Model_Category::$table.".slug", "=", $slug)
 			->order_by('posted_date', 'DESC')
 			->order_by('post_id', 'DESC')
+			->limit($num)
+			->offset($offset)
 			->as_object()
 			->execute();
 
@@ -181,6 +187,53 @@ class Soapbox_Model_Post extends Soapbox_Model
 			->execute();
 
 		return (count($result) === 1) ? $result->current() : false;
+	}
+
+	/**
+	 * Checks to see if there is a previous page.
+	 *
+	 * @param    int    $page    The page to check if there is a previous
+	 * @return   boolean
+	 */
+	public static function has_previous_page($page = 1)
+	{
+		return $page > 1;
+	}
+
+	/**
+	 * Checks to see if there is a next page.
+	 *
+	 * @param    int     $page    The page to check if there are previous posts
+	 * @param    string  $slug    The category slug (if applicable)
+	 * @return   boolean
+	 */
+	public static function has_next_page($page, $slug = null)
+	{
+		$num = Kohana::$config->load('soapbox')->per_page;
+
+		return (($page * $num) < static::count($slug));
+	}
+
+	/**
+	 * The number of posts
+	 *
+	 * @param    string   $slug   The category slug (if applicable)
+	 * @return   int
+	 */
+	public static function count($slug = null)
+	{
+		$query = DB::select(DB::expr("COUNT(*) AS `count`"))
+			->from(static::$table)
+			->as_object();
+
+		if ($slug !== null)
+		{
+			$query->join(Model_Post_Category::$table)->using(static::$primary)
+				->join(Model_Category::$table)->using(Model_Category::$primary)
+				->where(Model_Category::$table.".slug", "=", $slug);
+		}
+
+		return (int) $query->execute()->current()->count;
 	}
 
 	/**

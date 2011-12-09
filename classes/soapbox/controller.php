@@ -28,11 +28,15 @@ class Soapbox_Controller extends Controller_Template
 	 */
 	public function action_index()
 	{
-		$page = $this->request->param('page', 1);
+		$page = Arr::get($this->request->query(), 'page', 1);
 
 		$this->template->title = $this->_config['title'];
 		$this->template->content = View::factory('soapbox/list')->set(array(
+			'title' => null,
 			'posts' => Model::factory('post')->fetch($this->_config['per_page'], $page),
+			'page' => $page,
+			'next_page' => Model_Post::has_next_page($page) ? $page + 1 : false,
+			'previous_page' => Model_Post::has_previous_page($page) ? $page - 1 : false,
 		));
 	}
 
@@ -42,11 +46,15 @@ class Soapbox_Controller extends Controller_Template
 	public function action_category()
 	{
 		$slug = $this->request->param('category');
+		$page = Arr::get($this->request->query(), 'page', 1);
 
 		$this->template->title = $this->_config['title']." :: ".$slug;
 		$this->template->content = View::factory('soapbox/list')->set(array(
 			'title' => $slug,
-			'posts' => Model_Post::in_category($slug),
+			'posts' => Model_Post::in_category($slug, $this->_config['per_page'], $page),
+			'page' => $page,
+			'next_page' => Model_Post::has_next_page($page, $slug) ? $page + 1 : false,
+			'previous_page' => Model_Post::has_previous_page($page) ? $page - 1 : false,
 		));
 	}
 
