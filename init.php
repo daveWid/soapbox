@@ -62,8 +62,8 @@ Route::set('soapbox', "{$section}")
 		'action' => "index",
 	));
 
-// Search
-Route::set('soapbox/search', "{$section}/search")
+// One word routes
+Route::set('soapbox/action', "{$section}/<action>", array('action' => "(search|feed)"))
 	->defaults(array(
 		'controller' => "soapbox",
 		'action' => "search",

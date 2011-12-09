@@ -98,6 +98,14 @@ class Soapbox_Controller extends Controller_Template
 	}
 
 	/**
+	 * The RSS Feed
+	 */
+	public function action_feed()
+	{
+		var_dump("RSS Feed"); die;
+	}
+
+	/**
 	 * 404
 	 */
 	public function action_404()
