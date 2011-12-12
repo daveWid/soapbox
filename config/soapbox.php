@@ -6,7 +6,7 @@ return array
 	'title' => "My Blog",
 
 	// Short description of the blog
-	'description' => "A place for my thoughts",
+	'description' => "Another Soapbox blog",
 
 	/**
 	 * The name of the section on your site the blog will reside. Include trailing slash!!
