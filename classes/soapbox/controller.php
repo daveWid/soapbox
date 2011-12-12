@@ -99,10 +99,24 @@ class Soapbox_Controller extends Controller_Template
 
 	/**
 	 * The RSS Feed
+	 *
+	 * @see   http://feed2.w3.org/docs/rss2.html
 	 */
 	public function action_feed()
 	{
-		var_dump("RSS Feed"); die;
+		$this->auto_render = false; // No need for the template
+
+		$this->response->headers('Content-Type', 'text/xml')
+			->body(Feed::create(array(
+				'title' => $this->_config['title'],
+				'link' => Route::get('soapbox')->uri(),
+				'description' => $this->_config['description'],
+				'generator' => "Soapbox"
+			),
+			Model_Post::feed(),
+			'rss2',
+			Kohana::$charset
+		));
 	}
 
 	/**

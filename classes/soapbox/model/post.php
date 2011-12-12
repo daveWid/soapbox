@@ -156,6 +156,43 @@ class Soapbox_Model_Post extends Soapbox_Model
 	}
 
 	/**
+	 * Grabs the latests posts in a format that can be used in a RSS feed.
+	 *
+	 * @see     http://feed2.w3.org/docs/rss2.html
+	 *
+	 * @param   int   $num   The number of items to grab
+	 * @return  array        The feed items
+	 */
+	public static function feed($num = 5)
+	{
+		$posts = DB::select()
+			->from(static::$table)
+			->order_by('posted_date', 'DESC')
+			->order_by(static::$primary, 'DESC')
+			->as_object()
+			->limit($num)
+			->execute();
+
+		$feed = array();
+		foreach($posts as $row)
+		{
+			list($content) = static::truncate($row->content);
+
+			$item = array(
+				'title' => $row->title,
+				'link' => static::permalink($row, 'http'),
+				'description' => htmlentities($content),
+				'pubDate' => Date::formatted_time($row->posted_date, 'r'),
+			);
+
+			$item['guid'] = $item['link'];
+			$feed[] = $item;
+		}
+
+		return $feed;
+	}
+
+	/**
 	 * Truncates the content using a <!-- more --> tag in the content.
 	 *
 	 * @param   string   $content   The content to truncate
@@ -166,7 +203,7 @@ class Soapbox_Model_Post extends Soapbox_Model
 		$result = preg_split("/<!-- more -->/i", $content);
 
 		return array(
-			$result[0],
+			trim($result[0]),
 			count($result) > 1
 		);
 	}
@@ -257,16 +294,19 @@ class Soapbox_Model_Post extends Soapbox_Model
 	/**
 	 * Gets the permalink url to a post.
 	 *
-	 * @param   object   $post    The post object to permalink.
-	 * @param   string            The full url to the post
+	 * @param   object   $post       The post object to permalink.
+	 * @param   string   $protocol   If a protocol is specified, make a full url
+	 * @param   string               The full url to the post
 	 */
-	public static function permalink($post)
+	public static function permalink($post, $protocol = null)
 	{
-		return Route::url('soapbox/post', array(
+		$route = Route::get('soapbox/post')->uri(array(
 			'year' => Date::formatted_time($post->posted_date, "Y"),
 			'month' => Date::formatted_time($post->posted_date, "m"),
 			'slug' => $post->slug
 		));
+
+		return URL::site($route, $protocol);
 	}
 
 	/**

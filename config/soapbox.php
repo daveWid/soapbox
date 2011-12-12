@@ -5,6 +5,9 @@ return array
 	// The name of your soapbox blog
 	'title' => "My Blog",
 
+	// Short description of the blog
+	'description' => "A place for my thoughts",
+
 	/**
 	 * The name of the section on your site the blog will reside. Include trailing slash!!
 	 *
