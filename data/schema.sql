@@ -9,12 +9,12 @@ INSERT INTO `categories` (`category_id`, `slug`, `display`) VALUES
 (1, 'uncategorized', 'Uncategorized');
 
 CREATE TABLE `post` (
-  `post_id` int(10) unsigned NOT NULL auto_increment,
+  `post_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `title` varchar(255) NOT NULL,
   `slug` varchar(255) NOT NULL,
   `content` text NOT NULL,
-  `posted_date` date NOT NULL,
-  PRIMARY KEY  (`post_id`)
+  `posted_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`post_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 INSERT INTO `posts` (`post_id`, `title`, `slug`, `contents`, `posted_date`) VALUES
