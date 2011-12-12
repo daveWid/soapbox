@@ -8,3 +8,4 @@ blog  | The main blog page which holds a list of all posts
 blog/category/{slug} | A list of posts that are tagged in the given category
 blog/{year}/{month}/{slug} | A single blog post
 blog/admin | An administration interface (_the admin route can be changed through configuration_)
+blog/feed | The RSS feed for the site
