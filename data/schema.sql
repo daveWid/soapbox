@@ -5,7 +5,7 @@ CREATE TABLE `category` (
   PRIMARY KEY  (`category_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
-INSERT INTO `categories` (`category_id`, `slug`, `display`) VALUES
+INSERT INTO `category` (`category_id`, `slug`, `display`) VALUES
 (1, 'uncategorized', 'Uncategorized');
 
 CREATE TABLE `post` (
@@ -17,7 +17,7 @@ CREATE TABLE `post` (
   PRIMARY KEY (`post_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
-INSERT INTO `posts` (`post_id`, `title`, `slug`, `contents`, `posted_date`) VALUES
+INSERT INTO `post` (`post_id`, `title`, `slug`, `contents`, `posted_date`) VALUES
 (1, 'Hello World', 'hello-world', '<p>Here is a sample post that you should delete or edit to your liking!</p>', '2011-04-21');
 
 CREATE TABLE `post_category` (
@@ -27,5 +27,5 @@ CREATE TABLE `post_category` (
   KEY `category_id` (`category_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-INSERT INTO `post_categories` (`post_id`, `category_id`) VALUES
+INSERT INTO `post_category` (`post_id`, `category_id`) VALUES
 (1, 1);
