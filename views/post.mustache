@@ -1,0 +1,27 @@
+<article>
+	<h2>{{post_title}}</h2>
+
+	<div class="date">Posted: {{date}}</div>
+	{{#has_categories}}
+	<div class="categories">
+		{{#categories}}
+		<a href="{{link}}">{{display}}</a>
+		{{/categories}}
+	</div>
+	{{/has_categories}}
+
+	<div class="content">
+		{{{content}}}
+	</div>
+</article>
+
+<nav id="page-navigation">
+	<ul>
+{{#has_newer}}
+		<li class="next"><a href="{{newer.link}}">← {{newer.title}}</a></li>
+{{/has_newer}}
+{{#has_older}}
+		<li class="previous"><a href="{{older.link}}">{{older.title}} →</a></li>
+{{/has_older}}
+	</ul>
+</nav>

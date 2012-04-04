@@ -49,7 +49,7 @@ Route::set('soapbox/category', "category/<category>", array('category' => ".*"))
 ));
 
 // One word routes
-Route::set('soapbox/action', "<action>", array('action' => "(|search|feed|404)"))
+Route::set('soapbox', "<action>", array('action' => "(|search|feed|404)"))
 ->defaults(array(
 	'controller' => "soapbox",
 	'action' => "index",

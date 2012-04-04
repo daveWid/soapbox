@@ -15,8 +15,29 @@ class Controller_Soapbox extends Controller
 	 */
 	public function action_index()
 	{
-		$page = Arr::get($this->request->query(), 'page', 1);
-		$this->content = new View_List($page);
+		$this->content = new View_List(Arr::get($this->request->query(), 'page', 1));
+	}
+
+	/**
+	 * View a single post
+	 */
+	public function action_post()
+	{
+		$di = new Container;
+		$model = $di->model("Model_Post");
+
+		$post = $model->find_post(
+			$this->request->param('slug'),
+			$this->request->param('year'),
+			$this->request->param('month')
+		);
+
+		if ($post === null)
+		{
+			$this->request->redirect(Route::get('soapbox')->uri(array('action' => "404")));
+		}
+
+		$this->content = new View_Post($post, $model);
 	}
 
 	/**
@@ -37,23 +58,6 @@ class Controller_Soapbox extends Controller
 		));
 	}
 
-	/**
-	 * View a single post
-	 */
-	public function action_post()
-	{
-		$r = $this->request;
-
-		$post = Model_Post::get_post($r->param('slug'), "{$r->param('year')}-{$r->param('month')}");
-
-		if ($post === null)
-		{
-			$this->request->redirect(Route::get('soapbox/404')->uri()); // 404 if no post
-		}
-
-		$this->template->title = $this->_config['title']." :: ".$post->title;
-		$this->template->content = View::factory('soapbox/post')->set((array) $post);
-	}
 
 	/**
 	 * The search action
@@ -104,8 +108,8 @@ class Controller_Soapbox extends Controller
 	 */
 	public function action_404()
 	{
-		$this->template->title = "Page Not Found";
-		$this->template->content = View::factory('soapbox/404');
+		$this->layout->title .= "Page Not Found";
+		$this->content = $this->layout->load("404.mustache");
 	}
 
 	/**
