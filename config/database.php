@@ -9,6 +9,8 @@ return array
 			/**
 			 * The following options are available for PDO:
 			 *
+			 * @link    http://www.php.net/manual/en/pdo.construct.php
+			 *
 			 * string   dsn         PDO data source identifier
 			 * string   username    Database username
 			 * string   password    Database password
