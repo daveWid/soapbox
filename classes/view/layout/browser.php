@@ -46,12 +46,11 @@ class View_Layout_Browser extends \Owl\Layout
 	}
 
 	/**
-	 * Sets the site url given the passed in url
+	 * A lambda function to get the url relative to the site.
 	 *
-	 * @param  string $url  The url to use.
-	 * @return string       The site url
+	 * @return Closure
 	 */
-	public function url($url)
+	public function url()
 	{
 		return function($url){
 			return URL::site($url);
