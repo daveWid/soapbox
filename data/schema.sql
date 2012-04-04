@@ -17,7 +17,7 @@ CREATE TABLE `post` (
   PRIMARY KEY (`post_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
-INSERT INTO `post` (`post_id`, `title`, `slug`, `contents`, `posted_date`) VALUES
+INSERT INTO `post` (`post_id`, `title`, `slug`, `content`, `posted_date`) VALUES
 (1, 'Hello World', 'hello-world', '<p>Here is a sample post that you should delete or edit to your liking!</p>', '2011-04-21');
 
 CREATE TABLE `post_category` (
