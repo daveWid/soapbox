@@ -22,29 +22,31 @@ class View_List extends Soapbox_View
 	/**
 	 * Setup Partials.
 	 *
-	 * @param int $page  The current page
+	 * @param int    $page      The current page
+	 * @param string $category  The category to fetch
 	 */
-	public function __construct($page = 1)
+	public function __construct($page = 1, $category = null)
 	{
 		$this->page = (int) $page;
-
-		$di = new Container;
-		$model = $di->model("Model_Post");
-		$this->posts = $model->latest();
+		$this->posts = $this->get_posts($category);
 
 		$this->partials = array(
 			'search' => $this->load("partials/search.mustache")
 		);
 	}
-}
 
-/*
-$this->template->title = $this->_config['title'];
-		$this->template->content = View::factory('soapbox/list')->set(array(
-			'posts' => Model::factory('post')->fetch($this->_config['per_page'], $page),
-			'page' => $page,
-			'next_page' => Model_Post::has_next_page($page) ? $page + 1 : false,
-			'previous_page' => Model_Post::has_previous_page($page) ? $page - 1 : false,
-		));
- * 
- */
+	/**
+	 * Gets the posts to be displayed.
+	 *
+	 * @return \Cactus\Collection
+	 */
+	protected function get_posts($category = null)
+	{
+		$di = new Container;
+		$model = $di->model("Model_Post");
+		return ($category === null) ?
+			$model->latest() :
+			$model->get_category($category);
+	}
+
+}

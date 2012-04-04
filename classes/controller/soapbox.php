@@ -15,7 +15,8 @@ class Controller_Soapbox extends Controller
 	 */
 	public function action_index()
 	{
-		$this->content = new View_List(Arr::get($this->request->query(), 'page', 1));
+		$page = Arr::get($this->request->query(), 'page', 1);
+		$this->content = new View_List($page);
 	}
 
 	/**
@@ -45,19 +46,11 @@ class Controller_Soapbox extends Controller
 	 */
 	public function action_category()
 	{
-		$slug = $this->request->param('category');
 		$page = Arr::get($this->request->query(), 'page', 1);
+		$category = $this->request->param('category');
 
-		$this->template->title = $this->_config['title']." :: ".$slug;
-		$this->template->content = View::factory('soapbox/list')->set(array(
-			'title' => $slug,
-			'posts' => Model_Post::in_category($slug, $this->_config['per_page'], $page),
-			'page' => $page,
-			'next_page' => Model_Post::has_next_page($page, $slug) ? $page + 1 : false,
-			'previous_page' => Model_Post::has_previous_page($page) ? $page - 1 : false,
-		));
+		$this->content = new View_List($page, $category);
 	}
-
 
 	/**
 	 * The search action

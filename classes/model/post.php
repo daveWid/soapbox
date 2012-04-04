@@ -120,4 +120,22 @@ class Model_Post extends \Cactus\Model
 		return (count($result) == 0) ? null : $result->current();
 	}
 
+	/**
+	 * Gets all of the posts that have the given category.
+	 *
+	 * @param string $category  The category slug
+	 * @return \Cactus\Collection
+	 */
+	public function get_category($category)
+	{
+		$query = new \Peyote\Select;
+		$query->table($this->table)
+			->join('post_category')->using('post_id')
+			->join('category')->using('category_id')
+			->order_by("posted_date", "DESC")
+			->where('category.slug', '=', $category);
+
+		return $this->find(array(), $query);
+	}
+
 }
