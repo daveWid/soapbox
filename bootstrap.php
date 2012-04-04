@@ -103,7 +103,7 @@ Kohana::$config->attach(new Config_File);
 Kohana::modules(array());
 
 // Move routing into its own file
-include __DIR__."routes.php";
+include "routes.php";
 
 // Setup PSR-0 Autoloading
 $path = array("classes","Symfony","Component","ClassLoader","UniversalClassLoader.php");
