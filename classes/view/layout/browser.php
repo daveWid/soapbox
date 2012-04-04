@@ -46,6 +46,19 @@ class View_Layout_Browser extends \Owl\Layout
 	}
 
 	/**
+	 * Sets the site url given the passed in url
+	 *
+	 * @param  string $url  The url to use.
+	 * @return string       The site url
+	 */
+	public function url($url)
+	{
+		return function($url){
+			return URL::site($url);
+		};
+	}
+
+	/**
 	 * Gets the path to the template file.
 	 *
 	 * @return string 
