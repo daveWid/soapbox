@@ -1,0 +1,40 @@
+<h1>{{page_title}}</h1>
+
+{{> search}}
+
+{{#posts}}
+<article>
+	<h2><a href="{{link}}">{{title}}</a></h2>
+
+	<div class="date">Posted: {{date}}</div>
+	{{#has_categories}}
+	<div class="categories">
+		{{#categories}}
+		<a href="{{link}}">{{category}}</a>
+		{{/categories}}
+	</div>
+	{{/has_categories}}
+
+	<div class="contents">
+		{{truncated}}
+	</div>
+
+	{{#has_more}}
+	<div class="read-more">
+		<a href="{{link}}">Read More →</a>
+	</div>
+	{{/has_more}}
+</article>
+{{/posts}}
+
+
+<nav id="page-navigation">
+	<ul>
+{{#newer}}
+		<li id="newer-posts"><a href="{{newer}}">← Newer Posts</a></li>
+{{/newer}}
+{{#older}}
+		<li id="older-posts"><a href="{{older}}">Older Posts →</a></li>
+{{/older}}
+	</ul>
+</nav>
