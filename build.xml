@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Soapbox" default="package" basedir=".">
+	<property name="version" value="0.0.1" />
+
+	<!-- Packages up the code to be uploaded -->
+	<target name="package">
+		<!-- Build the zip -->
+		<zip destfile="${project.basedir}/package/Soapbox-${version}.zip">
+			<fileset dir="${project.basedir}/">
+				<include name="**/**" />
+			</fileset>
+		</zip>
+	</target>
+</project>
