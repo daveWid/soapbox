@@ -10,6 +10,16 @@
 class Soapbox_Post extends \Cactus\Entity
 {
 	/**
+	 * @var string  The truncated text.
+	 */
+	private $truncated = null;
+
+	/**
+	 * @var boolean  Is there more text to read (a truncated post?)
+	 */
+	public $has_more = false;
+
+	/**
 	 * The link to the full post.
 	 *
 	 * @return string 
@@ -38,5 +48,23 @@ class Soapbox_Post extends \Cactus\Entity
 	public function has_categories()
 	{
 		return count($this->categories) > 0;
+	}
+
+	/**
+	 * Truncated content using a <!-- more --> tag in the content.
+	 *
+	 * @param   string   $content   The content to truncate
+	 * @return  array               array (text "string", is there more text? "boolean")
+	 */
+	public function truncated()
+	{
+		if ($this->truncated === null)
+		{
+			$result = preg_split("/<!-- more -->/i", $this->content);
+			$this->truncated = trim($result[0]);
+			$this->has_more = count($result) > 1;
+		}
+
+		return $this->truncated;
 	}
 }

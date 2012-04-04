@@ -25,6 +25,13 @@ class Model_Post extends \Cactus\Model
 				'posted_date' => \Cactus\Field::DATETIME
 			),
 			'object_class' => "Soapbox_Post",
+			'relationships' => array(
+				'categories' => array(
+					'type' => \Cactus\Relationship::HAS_MANY,
+					'driver' => "Model_Category",
+					'column' => 'post_id'
+				)
+			)
 		));
 	}
 
