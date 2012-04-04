@@ -106,14 +106,7 @@ Kohana::modules(array());
 include "routes.php";
 
 // Setup PSR-0 Autoloading
-$path = array("vendor","Symfony","Component","ClassLoader","UniversalClassLoader.php");
-include APPPATH.implode(DIRECTORY_SEPARATOR, $path);
+include APPPATH."vendor".DIRECTORY_SEPARATOR."SplClassLoader.php";
 
-use Symfony\Component\ClassLoader\UniversalClassLoader;
-
-$loader = new UniversalClassLoader();
+$loader = new SplClassLoader(null, APPPATH."vendor");
 $loader->register();
-
-$loader->useIncludePath(APPPATH."vendor");
-
-unset($path);
