@@ -22,7 +22,7 @@ else
  * @see  http://kohanaframework.org/guide/using.configuration
  * @see  http://php.net/timezones
  */
-date_default_timezone_set('America/Chicago');
+date_default_timezone_set('America/New_York');
 
 /**
  * Set the default locale.
@@ -81,6 +81,10 @@ if (isset($_SERVER['KOHANA_ENV']))
  */
 Kohana::init(array(
 	'base_url'   => '/',
+	'index_file' => false,
+	'errors' => Kohana::$environment !== Kohana::PRODUCTION,
+	'profile' => Kohana::$environment !== Kohana::PRODUCTION,
+	'caching' => Kohana::$environment === Kohana::PRODUCTION,
 ));
 
 /**
@@ -94,25 +98,22 @@ Kohana::$log->attach(new Log_File(APPPATH.'logs'));
 Kohana::$config->attach(new Config_File);
 
 /**
- * Enable modules. Modules are referenced by a relative or absolute path.
+ * Modules? we don't need no stinkin' modules...
  */
-Kohana::modules(array(
-	// 'auth'       => MODPATH.'auth',       // Basic authentication
-	// 'cache'      => MODPATH.'cache',      // Caching with multiple backends
-	// 'codebench'  => MODPATH.'codebench',  // Benchmarking tool
-	// 'database'   => MODPATH.'database',   // Database access
-	// 'image'      => MODPATH.'image',      // Image manipulation
-	// 'orm'        => MODPATH.'orm',        // Object Relationship Mapping
-	// 'unittest'   => MODPATH.'unittest',   // Unit testing
-	// 'userguide'  => MODPATH.'userguide',  // User guide and API documentation
-	));
+Kohana::modules(array());
 
-/**
- * Set the routes. Each route must have a minimum of a name, a URI and a set of
- * defaults for the URI.
- */
-Route::set('default', '(<controller>(/<action>(/<id>)))')
-	->defaults(array(
-		'controller' => 'welcome',
-		'action'     => 'index',
-	));
+// Move routing into its own file
+include __DIR__."routes.php";
+
+// Setup PSR-0 Autoloading
+$path = array("classes","Symfony","Component","ClassLoader","UniversalClassLoader.php");
+include APPPATH.implode(DIRECTORY_SEPARATOR, $path);
+
+use Symfony\Component\ClassLoader\UniversalClassLoader;
+
+$loader = new UniversalClassLoader();
+$loader->register();
+
+$loader->useIncludePath(APPPATH."classes");
+
+unset($path);
