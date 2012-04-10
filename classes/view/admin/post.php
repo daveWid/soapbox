@@ -108,6 +108,7 @@ class View_Admin_Post extends Soapbox_View
 	public function added_to_layout(\Owl\Layout $layout)
 	{
 		$layout->title .= "Admin » ".$this->verb();
+		$layout->js[] = new \Owl\Asset\Javascript("https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js");
 		$layout->js[] = new \Owl\Asset\JavaScript("https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js");
 		$layout->css[] = new \Owl\Asset\Css("http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/themes/smoothness/jquery-ui.css");
 	}

@@ -57,6 +57,7 @@ class View_Admin_List extends Soapbox_View
 	public function added_to_layout(\Owl\Layout $layout)
 	{
 		$layout->title .= "Admin";
+		$layout->js[] = new \Owl\Asset\Javascript("https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js");
 	}
 
 }

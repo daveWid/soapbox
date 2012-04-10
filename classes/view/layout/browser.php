@@ -17,11 +17,8 @@ class View_Layout_Browser extends \Owl\Layout
 		$this->title = "Soapbox » ";
 
 		$this->css = array(
-			new \Owl\Asset\Css(URL::site("css/style.css")),
-		);
-
-		$this->js = array(
-			new \Owl\Asset\JavaScript("https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"),
+			new \Owl\Asset\Css(URL::site("css/normalize.css")),
+			new \Owl\Asset\Css(URL::site("css/browser.css")),
 		);
 	}
 
