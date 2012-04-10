@@ -91,4 +91,18 @@ class Model_Post extends \Cactus\Model
 		return $this->find(array(), $query);
 	}
 
+	/**
+	 * Searches the site for a given query.
+	 *
+	 * @param  string $query   The query to search for.
+	 * @return \Cactus\Collection
+	 */
+	public function search($term)
+	{
+		$select = new \Peyote\Select($this->table);
+		$select->where("title,source", "AGAINST", $term);
+
+		return $this->find(array(), $select);
+	}
+
 }

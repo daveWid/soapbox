@@ -25,6 +25,11 @@ class View_List extends Soapbox_View
 	private $page_title = "";
 
 	/**
+	 * @var string  The search query
+	 */
+	public $q = "";
+
+	/**
 	 * Setup Partials.
 	 *
 	 * @param \Cactus\Collestion $posts  The posts to be viewed on this page
@@ -38,6 +43,16 @@ class View_List extends Soapbox_View
 		$this->partials = array(
 			'search' => $this->load("partials/search.mustache")
 		);
+	}
+
+	/**
+	 * Check to see if there are posts.
+	 *
+	 * @return boolean
+	 */
+	public function has_posts()
+	{
+		return ($this->posts !== null AND count($this->posts) > 0);
 	}
 
 	/**

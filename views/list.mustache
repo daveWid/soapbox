@@ -1,5 +1,6 @@
 <h1>{{page_title}}</h1>
 
+{{#has_posts}}
 {{#posts}}
 <article>
 	<h2><a href="{{link}}">{{title}}</a></h2>
@@ -22,6 +23,10 @@
 	</div>
 </article>
 {{/posts}}
+{{/has_posts}}
+{{^has_posts}}
+<p>No posts found.</p>
+{{/has_posts}}
 
 
 <p class="archive">

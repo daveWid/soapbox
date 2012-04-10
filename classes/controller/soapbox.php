@@ -67,20 +67,18 @@ class Controller_Soapbox extends Controller
 	public function action_search()
 	{
 		// If there isn't a search query, then just send to homepage
-		$query = $this->request->query('query');
+		$query = $this->request->query('q');
 
-		if ($this->request->query('query') === null)
+		if ($query === null)
 		{
-			$this->request->redirect(Route::get('soapbox')->uri());
+			$this->request->redirect(Route::get('soapbox')->uri(array('action' => "404")));
 		}
 
-		$this->template->title = "Search :: {$query}";
-		$this->template->content = View::factory('soapbox/list')->set(array(
-			'title' => "Search » {$query}",
-			'posts' => Model_Post::search($query),
-			'next_page' => false, // No pagination on search
-			'previous_page' => false,
-		));
+		$model = $this->di->model("Model_Post");
+		$posts = $model->search($query);
+
+		$this->content = new View_List($posts, "Search » {$query}");
+		$this->content->q = $query;
 	}
 
 	/**
