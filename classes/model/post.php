@@ -99,7 +99,7 @@ class Model_Post extends \Cactus\Model
 	public function latest($num = 10)
 	{
 		return $this->find(array(
-			'order_by' => array('posted_date', 'DESC'),
+			'order_by' => 'posted_date DESC, post_id DESC',
 			'limit' => $num
 		));
 	}
