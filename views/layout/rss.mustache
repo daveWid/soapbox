@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="{{charset}}"?>
+<rss version="2.0">
+	<channel>
+		<title>{{title}}</title>
+		<link>{{link}}</link>
+		<description>{{description}}</description>
+		<language>{{lang}}</language>
+		<lastBuildDate>{{lastBuildDate}}</lastBuildDate>
+		<generator>Soapbox</generator>
+
+		{{#posts}}
+		<item>
+			<title>{{title}}</title>
+			<link>{{permalink}}</link>
+			<description>{{excerpt}}</description>
+			<guid isPermalink="true">{{permalink}}</guid>
+			<category>{{display_categories}}</category>
+			<pubDate>{{pubDate}}</pubDate>
+		</item>
+		{{/posts}}
+	</channel>
+</rss>

@@ -40,4 +40,35 @@ class Soapbox_Post extends \Cactus\Entity
 		return count($this->categories) > 0;
 	}
 
+	/**
+	 * @return string  A list of categories in display format.
+	 */
+	public function display_categories()
+	{
+		$display = array();
+
+		foreach ($this->categories as $cat)
+		{
+			$display[] = $cat->display;
+		}
+
+		return implode(" ", $display);
+	}
+
+	/**
+	 * @return string  The publication date of the post
+	 */
+	public function pubDate()
+	{
+		return $this->date('r');
+	}
+
+	/**
+	 * @return string  The permalink for the post
+	 */
+	public function permalink()
+	{
+		return URL::site($this->slug, true);
+	}
+
 }
