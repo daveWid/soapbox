@@ -15,6 +15,26 @@ class Container
 	private $pdo = null;
 
 	/**
+	 * Loads a view and makes sure that the rendering enging and templating paths
+	 * are set correctly.
+	 *
+	 * @param  string $name  The name of the view
+	 * @return \Owl\View
+	 */
+	public function view($name)
+	{
+		$view = new $name;
+
+		if ($view->get_engine() === null)
+		{
+			$view->set_engine(new Mustache);
+			$view->set_template_path(APPPATH."views");
+		}
+
+		return $view;
+	}
+
+	/**
 	 * Gets a model, and makes sure that the adapter is set.
 	 *
 	 * @param  string $name  The name of the model
