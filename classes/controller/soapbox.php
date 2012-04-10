@@ -51,6 +51,17 @@ class Controller_Soapbox extends Controller
 	}
 
 	/**
+	 * Shows all of the posts in an archive format.
+	 */
+	public function action_archive()
+	{
+		$model = $this->di->model("Model_Post");
+		$posts = $model->all('posted_date', 'DESC');
+
+		$this->content = new View_Archive($posts);
+	}
+
+	/**
 	 * The search action
 	 */
 	public function action_search()

@@ -10,11 +10,6 @@
 class View_List extends Soapbox_View
 {
 	/**
-	 * @var int  The current "page"
-	 */
-	private $page;
-
-	/**
 	 * @var \Cactus\Collection (of Soapbox_Post Objects)
 	 */
 	private $posts;

@@ -1,0 +1,12 @@
+<h1>{{page_title}}</h1>
+
+{{#get_years}}
+<h2>{{year}}</h2>
+
+<dl>
+{{#posts}}
+	<dt><a href="{{#url}}{{/url}}{{slug}}">{{title}}</a></dt>
+	<dd>{{date}}</dd>
+{{/posts}}
+</dl>
+{{/get_years}}
