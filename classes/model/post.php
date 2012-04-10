@@ -24,7 +24,7 @@ class Model_Post extends \Cactus\Model
 				'source' => \Cactus\Field::VARCHAR,
 				'html' => \Cactus\Field::VARCHAR,
 				'excerpt' => \Cactus\Field::VARCHAR,
-				'posted_date' => \Cactus\Field::DATETIME,
+				'posted_date' => \Cactus\Field::DATE,
 				'last_modified' => \Cactus\Field::DATETIME
 			),
 			'object_class' => "Soapbox_Post",
@@ -36,6 +36,33 @@ class Model_Post extends \Cactus\Model
 				)
 			)
 		));
+	}
+
+	/**
+	 * Normalize the data before it is added.
+	 *
+	 * @param  \Cactus\Entity $object    The object to save
+	 * @param  boolean        $validate  Validate the object?
+	 * @return array
+	 */
+	public function create(\Cactus\Entity &$object, $validate = true)
+	{
+		$slug = str_replace(" ", "-", strtolower($object->title));
+		$slug = preg_replace("/[^a-z|\-]+/", "", $slug);
+		$object->slug = $object->posted_date->format("Y/m/").$slug;
+
+		$object->posted_date = $object->posted_date->format("Y-m-d");
+		$object->last_modified = date("Y-m-d H:i:s");
+
+		// Now render the content.
+		include APPPATH."vendor".DIRECTORY_SEPARATOR."Markdown.php";
+		$md = new MarkdownExtra_Parser;
+		$object->html = $md->transform($object->source);
+
+		list($exerpt) = explode(PHP_EOL, $object->source);
+		$object->excerpt = $md->transform($exerpt);
+
+		return parent::create($object, $validate);
 	}
 
 	/**

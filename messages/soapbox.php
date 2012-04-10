@@ -5,7 +5,7 @@ return array(
 		'not_empty' => "Please enter a post title.",
 	),
 
-	'content' => array(
+	'source' => array(
 		'not_empty' => "A post must have some content.",
 	),
 

@@ -28,13 +28,10 @@ class Controller_Admin extends Controller
 	 */
 	public function action_index()
 	{
-		var_dump("Admin"); die;
-		
-		$this->template->title = $this->_config['title']." :: Administration";
-		$this->template->content = View::factory('soapbox/admin/list')->set(array(
-			'posts' => Model::factory('post')->fetch(),
-			'message' => Session::instance()->get_once('soapbox-message', null)
-		));
+		$model = $this->di->model("Model_Post");
+		$posts = $model->all();
+
+		$this->content = new View_Admin_List($posts);
 	}
 
 	/**
@@ -42,40 +39,26 @@ class Controller_Admin extends Controller
 	 */
 	public function action_add()
 	{
-		if ($this->request->method() === "POST")
+		$post = new Soapbox_Post($this->request->post());
+
+		if ($this->request->method() === Request::POST)
 		{
-			$this->do_add();
+			if ($post->is_valid())
+			{
+				$model = $this->di->model("Model_Post");
+				list($id, $num) = $model->save($post);
+
+				// Save the categories...
+
+				$this->request->redirect(Route::get('soapbox/admin')->uri(array('index' => false)));
+			}
+			else
+			{
+				Session::instance()->set('soapbox_error', $post->errors('soapbox'));
+			}
 		}
 
-		$this->template->title = "Administration :: Add Post";
-		$this->template->content = View::factory('soapbox/admin/form')->set(array(
-			'post' => $this->request->post(),
-			'action' => Route::url('soapbox/admin', array('action' => "add")),
-			'new' => true,
-			'categories' => Arr::get($this->request->post(), 'categories', array()),
-			'error' => Session::instance()->get_once('soapbox-message', null),
-		));
-	}
-
-	/**
-	 * Processes the add post form.
-	 */
-	public function do_add()
-	{
-		$model = new Model_Post;
-		$post = $this->request->post();
-
-		if ($model->validate_new($post))
-		{
-			list($id, $num) = $model->create($post); // Save the post
-			Model_Post_Category::set_post($id, Arr::get($post, 'category', array()));
-
-			$this->request->redirect(Route::get('soapbox/admin')->uri(array('index' => false)));
-		}
-		else
-		{
-			Session::instance()->set('soapbox-message', $model->errors('soapbox'));
-		}
+		$this->content = new View_Admin_Post($post, "add");
 	}
 
 	/**

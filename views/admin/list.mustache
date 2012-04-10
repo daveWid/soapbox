@@ -1,0 +1,27 @@
+<h1>Soapbox Administration</h1>
+
+{{> logout}}
+
+<p><a href="{{#url}}admin/add{{/url}}" role="button">New Post</a></p>
+
+<table>
+	<thead>
+		<tr>
+			<th>Post</th>
+			<th>Date</th>
+			<th>Actions</th>
+		</tr>
+	</thead>
+	<tbody>
+	{{#posts}}
+		<tr>
+			<td><a href="{{permalink}}">{{title}}</a></td>
+			<td>{{date}}</td>
+			<td>
+				<a href="{{#url}}admin/edit{{/url}}/{{post_id}}">Edit</a> |
+				<a href="{{#url}}admin/delete{{/url}}/{{post_id}}" data-action="delete">Delete</a>
+			</td>
+		</tr>
+	{{/posts}}
+	</tbody>
+</table>

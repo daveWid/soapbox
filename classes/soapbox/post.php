@@ -10,9 +10,27 @@
 class Soapbox_Post extends \Cactus\Entity
 {
 	/**
+	 * Setup a new post object.
+	 *
+	 * @param array $data  The data to set.
+	 */
+	public function __construct(array $data = null)
+	{
+		if ($data !== null)
+		{
+			$date = Arr::get($data, 'posted_date', false);
+			$data['posted_date'] = ($date !== false) ?
+				DateTime::createFromFormat("Y-m-d", $date) :
+				new DateTime ;
+		}
+
+		parent::__construct($data);
+	}
+
+	/**
 	 * The link to the full post.
 	 *
-	 * @return string 
+	 * @return string
 	 */
 	public function link()
 	{
@@ -69,6 +87,35 @@ class Soapbox_Post extends \Cactus\Entity
 	public function permalink()
 	{
 		return URL::site($this->slug, true);
+	}
+
+	/**
+	 * Checks to see if the data is valid.
+	 *
+	 * @return boolean   Is the data valid?
+	 */
+	public function is_valid()
+	{
+		$this->validation = new Validation($this->data());
+
+		$this->validation->rule('title', 'not_empty')
+			->rule('source', 'not_empty')
+			->rule('posted_date', 'not_empty');
+
+		return $this->validation->check();
+	}
+
+	/**
+	 * Validation errors.
+	 *
+	 * @param   type     $file        The path to the message file
+	 * @param   boolean  $translate   Translate the errors?
+	 * @return  array
+	 */
+	public function errors($file = null, $translate = true)
+	{
+		$errors = $this->validation->errors($file, $translate);
+		return implode("<br />", $errors);
 	}
 
 }

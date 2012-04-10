@@ -1,0 +1,32 @@
+<h1>{{verb}} Post</h1>
+
+{{> message}}
+
+<form action="{{action}}" method="post">
+	<div>
+		<label for="fTitle">Title</label>
+		<input id="fTitle" type="text" name="title" value="{{post_title}}" />
+	</div>
+	<div>
+		<label for="fSource">Content</label>
+		<textarea id="fSource" name="source">{{post_source}}</textarea>
+	</div>
+	<div>
+		<label for="fPostedDate">Posted Date</label>
+		<input id="fPostedDate" type="text" name="posted_date" value="{{posted_date}}"
+	</div>
+
+	<p><input type="submit" value="Save" /></p>
+</form>
+
+<script>
+	$("fTitle").on("blur", function(e){
+		console.log(e);
+	});
+
+	$("#fPostedDate").datepicker({
+		dateFormat: "yy-mm-dd", 
+		changeMonth: true,
+		changeYear: true
+	});
+</script>
