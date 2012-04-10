@@ -34,6 +34,10 @@ class View_List extends Soapbox_View
 	{
 		$this->posts = $posts;
 		$this->page_title = $title;
+
+		$this->partials = array(
+			'search' => $this->load("partials/search.mustache")
+		);
 	}
 
 	/**
