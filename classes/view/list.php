@@ -25,13 +25,20 @@ class View_List extends Soapbox_View
 	private $model = null;
 
 	/**
+	 * @var string  The page title
+	 */
+	private $page_title = "";
+
+	/**
 	 * Setup Partials.
 	 *
 	 * @param \Cactus\Collestion $posts  The posts to be viewed on this page
+	 * @param string             $title  The page title to set
 	 */
-	public function __construct($posts)
+	public function __construct($posts, $title = "Latest Posts")
 	{
 		$this->posts = $posts;
+		$this->page_title = $title;
 	}
 
 	/**
@@ -51,7 +58,7 @@ class View_List extends Soapbox_View
 	 */
 	public function added_to_layout(\Owl\Layout $layout)
 	{
-		$layout->title .= "Latest Posts";
+		$layout->title .= $this->page_title;
 	}
 
 }

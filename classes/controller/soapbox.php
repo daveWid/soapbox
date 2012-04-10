@@ -42,10 +42,12 @@ class Controller_Soapbox extends Controller
 	 */
 	public function action_category()
 	{
-		$page = Arr::get($this->request->query(), 'page', 1);
 		$category = $this->request->param('category');
 
-		$this->content = new View_List($page, $category);
+		$model = $this->di->model("Model_Post");
+		$posts = $model->get_category($category);
+
+		$this->content = new View_List($posts, $category);
 	}
 
 	/**

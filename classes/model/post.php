@@ -82,6 +82,7 @@ class Model_Post extends \Cactus\Model
 	{
 		$query = new \Peyote\Select;
 		$query->table($this->table)
+			->columns("post.*")
 			->join('post_category')->using('post_id')
 			->join('category')->using('category_id')
 			->order_by("posted_date", "DESC")
