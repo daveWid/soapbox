@@ -31,10 +31,18 @@ class Controller extends Kohana_Controller
 	protected $is_mobile = false;
 
 	/**
+	 * @var Container  The dependency injection container
+	 */
+	protected $di = null;
+
+	/**
 	 * Gets the logged in user if they are available
 	 */
 	public function before()
 	{
+		// Setup the DI container
+		$this->di = new Container;
+
 		// See which request to load
 		$layout = "View_Layout_Browser";
 
@@ -47,9 +55,7 @@ class Controller extends Kohana_Controller
 		}
 
 		// Create the layout and setup needed variables
-		$this->layout = new $layout;
-		$this->layout->set_engine(new Mustache);
-		$this->layout->set_template_path(APPPATH."views");
+		$this->layout = $this->di->view($layout);
 
 		return parent::before();
 	}
