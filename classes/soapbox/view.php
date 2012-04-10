@@ -10,6 +10,11 @@
 class Soapbox_View extends \Owl\View
 {
 	/**
+	 * @var string  The error message
+	 */
+	public $message = "";
+
+	/**
 	 * Gets the name of the file to search for. 
 	 *
 	 * @return string
@@ -21,6 +26,18 @@ class Soapbox_View extends \Owl\View
 		array_shift($parts);
 
 		return implode(DIRECTORY_SEPARATOR, $parts).".mustache";
+	}
+
+	/**
+	 * Is there is message?
+	 *
+	 * @return string or boolean false
+	 */
+	public function has_message()
+	{
+		$this->message = Session::instance()->get_once("soapbox_error", false);
+
+		return $this->message ? true : false;
 	}
 
 }

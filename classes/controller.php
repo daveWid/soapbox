@@ -43,6 +43,9 @@ class Controller extends Kohana_Controller
 		// Setup the DI container
 		$this->di = new Container;
 
+		// Check for a user
+		$this->user = Session::instance()->get("soapbox_user");
+
 		// See which request to load
 		$layout = "View_Layout_Browser";
 

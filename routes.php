@@ -2,11 +2,10 @@
 
 // Admin
 Route::set('soapbox/admin', "admin(/<action>(/<id>))", array(
-	'action' => "(|add|edit|delete)",
+	'action' => "(add|edit|delete)",
 	'id' => "\d+"
 ))->defaults(array(
-	'directory' => "admin",
-	'controller' => "soapbox",
+	'controller' => "admin",
 	'action' => "index",
 	'id' => null
 ));
@@ -17,7 +16,7 @@ Route::set('soapbox/admin/category', "admin/category(/<action>(/<id>))", array(
 	'id' => "\d+"
 ))->defaults(array(
 	'directory' => "admin",
-	'controller' => "soapbox_category",
+	'controller' => "category",
 	'action' => "index",
 	'id' => null
 ));

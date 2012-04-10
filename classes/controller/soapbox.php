@@ -106,40 +106,31 @@ class Controller_Soapbox extends Controller
 	 */
 	public function action_login()
 	{
-		if ($this->request->method() === "POST")
+		$post = $this->request->post();
+
+		if ($this->request->method() === Request::POST)
 		{
-			$this->do_login();
+			$user = new Soapbox_User($post);
+			$model = $this->di->model("Model_User");
+
+			if ($model->login($user->email, $user->password) !== false)
+			{
+				Session::instance()->set('soapbox_user', $user->email);
+				$this->request->redirect(Route::get('soapbox/admin')->uri(array('action' => false)));
+			}
+			else
+			{
+				Session::instance()->set('soapbox_error', Kohana::message("soapbox", 'login.incorrect'));
+			}
 		}
 
-		// Check for user already
-		if (Auth::instance()->get_user())
+		// If they are already logged in, just pass them through
+		if ($this->user !== null)
 		{
 			$this->request->redirect(Route::get('soapbox/admin')->uri(array('action' => FALSE)));
 		}
-
-		$this->template->title = "Login";
-		$this->template->content = View::factory('soapbox/login')->set(array(
-			'user' => $this->request->post('user'),
-			'action' => URL::site($this->request->uri()),
-			'error' => Session::instance()->get_once('soapbox-error')
-		));
-	}
-
-	/**
-	 * Do the login processing
-	 */
-	protected function do_login()
-	{
-		$post = $this->request->post();
-
-		if (Auth::instance()->login($post['user'], $post['password']))
-		{
-			$this->request->redirect(Route::get('soapbox/admin')->uri(array('action' => false)));
-		}
-		else
-		{
-			Session::instance()->set('soapbox-error', Kohana::message('soapbox', 'login.incorrect'));
-		}
+		
+		$this->content = new View_Login($post);
 	}
 
 	/**
@@ -147,8 +138,8 @@ class Controller_Soapbox extends Controller
 	 */
 	public function action_logout()
 	{
-		Auth::instance()->logout();
-		$this->request->redirect(Route::get('soapbox/login')->uri(array('action' => "login")));
+		Session::instance()->delete("soapbox_user");
+		$this->request->redirect(Route::get('soapbox')->uri(array('action' => "login")));
 	}
 
 }
