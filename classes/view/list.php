@@ -17,7 +17,7 @@ class View_List extends Soapbox_View
 	/**
 	 * @var \Cactus\Collection (of Soapbox_Post Objects)
 	 */
-	public $posts;
+	private $posts;
 
 	/**
 	 * @var Model_Post  The model used to get the posts.
@@ -27,15 +27,11 @@ class View_List extends Soapbox_View
 	/**
 	 * Setup Partials.
 	 *
-	 * @param Model_Post $model     The model that gets the posts
-	 * @param int        $page      The current page
-	 * @param string     $category  The category to fetch
+	 * @param \Cactus\Collestion $posts  The posts to be viewed on this page
 	 */
-	public function __construct($model, $page = 1, $category = null)
+	public function __construct($posts)
 	{
-		$this->model = $model;
-		$this->page = (int) $page;
-		$this->posts = $this->get_posts($category);
+		$this->posts = $posts;
 
 		$this->partials = array(
 			'search' => $this->load("partials/search.mustache")
@@ -47,11 +43,9 @@ class View_List extends Soapbox_View
 	 *
 	 * @return \Cactus\Collection
 	 */
-	protected function get_posts($category = null)
+	public function posts()
 	{
-		return ($category === null) ?
-			$this->model->latest() :
-			$this->model->get_category($category);
+		return $this->posts;
 	}
 
 	/**
