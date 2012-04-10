@@ -32,10 +32,6 @@ class View_List extends Soapbox_View
 	public function __construct($posts)
 	{
 		$this->posts = $posts;
-
-		$this->partials = array(
-			'search' => $this->load("partials/search.mustache")
-		);
 	}
 
 	/**

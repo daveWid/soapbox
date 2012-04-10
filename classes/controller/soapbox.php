@@ -26,21 +26,15 @@ class Controller_Soapbox extends Controller
 	 */
 	public function action_post()
 	{
-		$di = new Container;
-		$model = $di->model("Model_Post");
-
-		$post = $model->find_post(
-			$this->request->param('slug'),
-			$this->request->param('year'),
-			$this->request->param('month')
-		);
+		$model = $this->di->model("Model_Post");
+		$post = $model->find_post($this->request->param('slug'));
 
 		if ($post === null)
 		{
 			$this->request->redirect(Route::get('soapbox')->uri(array('action' => "404")));
 		}
 
-		$this->content = new View_Post($post, $model);
+		$this->content = new View_Post($post);
 	}
 
 	/**

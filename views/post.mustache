@@ -11,17 +11,6 @@
 	{{/has_categories}}
 
 	<div class="content">
-		{{{content}}}
+		{{{html}}}
 	</div>
 </article>
-
-<nav id="page-navigation">
-	<ul>
-{{#has_newer}}
-		<li class="next"><a href="{{newer.link}}">← {{newer.title}}</a></li>
-{{/has_newer}}
-{{#has_older}}
-		<li class="previous"><a href="{{older.link}}">{{older.title}} →</a></li>
-{{/has_older}}
-	</ul>
-</nav>
