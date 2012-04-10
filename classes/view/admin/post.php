@@ -53,6 +53,14 @@ class View_Admin_Post extends Soapbox_View
 	}
 
 	/**
+	 * @return string  The slug
+	 */
+	public function post_slug()
+	{
+		return $this->post->slug;
+	}
+
+	/**
 	 * @return string  A readable version of the action verb
 	 */
 	public function verb()
@@ -65,27 +73,18 @@ class View_Admin_Post extends Soapbox_View
 	 */
 	public function action()
 	{
-		return Route::url('soapbox/admin', array('action' => "add"));
+		return Route::url('soapbox/admin', array(
+			'action' => $this->verb,
+			'id' => $this->post->post_id
+		));
 	}
 
 	/**
-	 * Check to see if there are posts.
-	 *
-	 * @return boolean
+	 * @return boolean Is this the edit screen?
 	 */
-	public function has_posts()
+	public function is_edit()
 	{
-		return ($this->posts !== null AND count($this->posts) > 0);
-	}
-
-	/**
-	 * Gets the posts to be displayed.
-	 *
-	 * @return \Cactus\Collection
-	 */
-	public function posts()
-	{
-		return $this->posts;
+		return $this->verb === "edit";
 	}
 
 	/**

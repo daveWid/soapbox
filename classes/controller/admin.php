@@ -67,50 +67,25 @@ class Controller_Admin extends Controller
 	public function action_edit()
 	{
 		$id = $this->request->param('id');
+		$model = $this->di->model("Model_Post");
+		$post = $model->get($id);
 
-		if ($this->request->method() === "POST")
+		if ($this->request->method() === Request::POST)
 		{
-			$this->do_edit($id);
-		}
-		else
-		{
-			// Get the post data
-			$this->request->post((array) Model::factory('post')->read($id));
-			$this->request->post('categories', Model_Post_Category::post_category_ids($id));
+			$post->set($this->request->post());
+
+			if ($post->is_valid())
+			{
+				$model->save($post);
+				$this->request->redirect(Route::get('soapbox/admin')->uri(array('index' => false)));
+			}
+			else
+			{
+				Session::instance()->set('soapbox_error', $post->errors('soapbox'));
+			}
 		}
 
-		$this->template->title = "Administration :: Edit Post";
-		$this->template->content = View::factory('soapbox/admin/form')->set(array(
-			'post' => $this->request->post(),
-			'action' => Route::url('soapbox/admin', array('action' => "edit", 'id' => $id)),
-			'new' => false,
-			'categories' => Arr::get($this->request->post(), 'categories', array()),
-			'error' => Session::instance()->get_once('soapbox-message', null),
-		));
-	}
-
-	/**
-	 * Does the editing of a post
-	 *
-	 * @param   int   The post id to edit
-	 */
-	protected function do_edit($id)
-	{
-		$model = new Model_Post;
-		$post = $this->request->post();
-
-		if ($model->validate_new($post))
-		{
-			$model->update($id, $post);
-			Model_Post_Category::set_post($id, Arr::get($post, 'category', array()));
-
-			Session::instance()->set('soapbox-message', Kohana::message('soapbox', 'edit.success'));
-			$this->request->redirect(Route::get('soapbox/admin')->uri(array('index' => false)));
-		}
-		else
-		{
-			Session::instance()->set('soapbox-message', $model->errors('soapbox'));
-		}
+		$this->content = new View_Admin_Post($post, "edit");
 	}
 
 	/**

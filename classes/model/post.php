@@ -66,6 +66,31 @@ class Model_Post extends \Cactus\Model
 	}
 
 	/**
+	 * Normalize the data before it is updated.
+	 *
+	 * @param  \Cactus\Entity $object    The object to save
+	 * @param  boolean        $validate  Validate the object?
+	 * @return array
+	 */
+	public function update(\Cactus\Entity &$object, $validate = true)
+	{
+		$object->last_modified = date("Y-m-d H:i:s");
+
+		// See if we need to re-render the content or not....
+		if (array_key_exists('source', $object->modified()))
+		{
+			include APPPATH."vendor".DIRECTORY_SEPARATOR."Markdown.php";
+			$md = new MarkdownExtra_Parser;
+			$object->html = $md->transform($object->source);
+
+			list($exerpt) = explode(PHP_EOL, $object->source);
+			$object->excerpt = $md->transform($exerpt);
+		}
+
+		return parent::update($object, $validate);
+	}
+
+	/**
 	 * Get the latest posts.
 	 *
 	 * @param  int $num  The number of posts to try and find

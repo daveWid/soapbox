@@ -7,6 +7,12 @@
 		<label for="fTitle">Title</label>
 		<input id="fTitle" type="text" name="title" value="{{post_title}}" />
 	</div>
+{{#is_edit}}
+	<div>
+		<label for="fSlug">Slug</label>
+		<input id="fSlug" type="text" name="slug" value="{{post_slug}}" />
+	</div>
+{{/is_edit}}
 	<div>
 		<label for="fSource">Content</label>
 		<textarea id="fSource" name="source">{{post_source}}</textarea>
