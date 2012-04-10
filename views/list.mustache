@@ -14,25 +14,16 @@
 	{{/has_categories}}
 
 	<div class="contents">
-		{{{truncated}}}
+		{{{excerpt}}}
 	</div>
 
-	{{#has_more}}
 	<div class="read-more">
-		<a href="{{link}}">Read More →</a>
+		<a href="{{link}}">Full Post →</a>
 	</div>
-	{{/has_more}}
 </article>
 {{/posts}}
 
 
-<nav id="page-navigation">
-	<ul>
-{{#newer}}
-		<li id="newer-posts"><a href="{{newer}}">← Newer Posts</a></li>
-{{/newer}}
-{{#older}}
-		<li id="older-posts"><a href="{{older}}">Older Posts →</a></li>
-{{/older}}
-	</ul>
-</nav>
+<p class="archive">
+	<a href="{{#url}}archive{{/url}}">Archive →</a>
+</p>

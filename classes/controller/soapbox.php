@@ -16,7 +16,9 @@ class Controller_Soapbox extends Controller
 	public function action_index()
 	{
 		$page = Arr::get($this->request->query(), 'page', 1);
-		$this->content = new View_List($page);
+
+		$model = $this->di->model("Model_Post");
+		$this->content = new View_List($model, $page);
 	}
 
 	/**

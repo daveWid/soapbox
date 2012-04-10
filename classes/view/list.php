@@ -20,13 +20,20 @@ class View_List extends Soapbox_View
 	public $posts;
 
 	/**
+	 * @var Model_Post  The model used to get the posts.
+	 */
+	private $model = null;
+
+	/**
 	 * Setup Partials.
 	 *
-	 * @param int    $page      The current page
-	 * @param string $category  The category to fetch
+	 * @param Model_Post $model     The model that gets the posts
+	 * @param int        $page      The current page
+	 * @param string     $category  The category to fetch
 	 */
-	public function __construct($page = 1, $category = null)
+	public function __construct($model, $page = 1, $category = null)
 	{
+		$this->model = $model;
 		$this->page = (int) $page;
 		$this->posts = $this->get_posts($category);
 
@@ -42,11 +49,19 @@ class View_List extends Soapbox_View
 	 */
 	protected function get_posts($category = null)
 	{
-		$di = new Container;
-		$model = $di->model("Model_Post");
 		return ($category === null) ?
-			$model->latest() :
-			$model->get_category($category);
+			$this->model->latest() :
+			$this->model->get_category($category);
+	}
+
+	/**
+	 * Adds the page title to the layout.
+	 *
+	 * @param \Owl\Layout $layout   The layout this content is added to
+	 */
+	public function added_to_layout(\Owl\Layout $layout)
+	{
+		$layout->title .= "Latest Posts";
 	}
 
 }
