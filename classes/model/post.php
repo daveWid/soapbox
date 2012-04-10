@@ -21,8 +21,11 @@ class Model_Post extends \Cactus\Model
 				'post_id' => \Cactus\Field::INT,
 				'title' => \Cactus\Field::VARCHAR,
 				'slug' => \Cactus\Field::VARCHAR,
-				'content' => \Cactus\Field::VARCHAR,
-				'posted_date' => \Cactus\Field::DATETIME
+				'source' => \Cactus\Field::VARCHAR,
+				'html' => \Cactus\Field::VARCHAR,
+				'excerpt' => \Cactus\Field::VARCHAR,
+				'posted_date' => \Cactus\Field::DATETIME,
+				'last_modified' => \Cactus\Field::DATETIME
 			),
 			'object_class' => "Soapbox_Post",
 			'relationships' => array(
@@ -53,15 +56,12 @@ class Model_Post extends \Cactus\Model
 	 * Locates a post with the given slug and year-month combo.
 	 *
 	 * @param  string $slug   The post slug
-	 * @param  int    $year   The post year
-	 * @param  int    $month  The post month
 	 * @return Soapbox_Post OR null
 	 */
-	public function find_post($slug, $year, $month)
+	public function find_post($slug)
 	{
 		$result = $this->find(array(
-			'slug' => $slug,
-			'posted_date' => array("{$year}-{$month}%", "LIKE")
+			'slug' => $slug
 		));
 
 		if (count($result) == 0)
@@ -70,54 +70,6 @@ class Model_Post extends \Cactus\Model
 		}
 
 		return $result->current();
-	}
-
-	/**
-	 * Get the neighboring posts of the given post.
-	 *
-	 * @param  int $id  The post id to check
-	 * @return array     array($newer, $older)
-	 */
-	public function get_neighbors($id)
-	{
-		return array(
-			$this->get_newer($id),
-			$this->get_older($id),
-		);
-	}
-
-	/**
-	 * Gets a post that is "newer".
-	 *
-	 * @param  int $id  The id
-	 * @return $this->object_class
-	 */
-	public function get_newer($id)
-	{
-		$result = $this->find(array(
-			$this->primary_key => array($id, ">"),
-			'order_by' => array("post_id", "ASC"),
-			'limit' => 1
-		));
-
-		return (count($result) == 0) ? null : $result->current();
-	}
-
-	/**
-	 * Gets a post that is "older".
-	 *
-	 * @param  int $id  The id
-	 * @return $this->object_class
-	 */
-	public function get_older($id)
-	{
-		$result = $this->find(array(
-			$this->primary_key => array($id, "<"),
-			'order_by' => array("post_id", "DESC"),
-			'limit' => 1
-		));
-
-		return (count($result) == 0) ? null : $result->current();
 	}
 
 	/**
