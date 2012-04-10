@@ -25,3 +25,26 @@
 	{{/posts}}
 	</tbody>
 </table>
+
+<script>
+	$('a[data-action="delete"]').on("click", function(e){
+		e.preventDefault();
+
+		var parent = $(this).closest("tr");
+
+		$.ajax({
+			type:"GET",
+			url: this.href,
+			dataType:'json',
+			success: function(response){
+				if (response.success === true) {
+					$(parent).fadeOut("normal", function(){
+						parent.remove();
+					});
+				} else {
+					alert(response.body);
+				}
+			}
+		});
+	});
+</script>

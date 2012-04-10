@@ -118,8 +118,26 @@ class Controller_Admin extends Controller
 	 */
 	public function action_delete()
 	{
-		Model::factory('post')->delete($this->request->param('id'));
-		$this->request->redirect(Route::get('soapbox/admin')->uri(array('action' => false)));
+		$content = array(
+			'success' => false,
+			'body' => "There was an error deleting the post."
+		);
+
+		$id = $this->request->param('id');
+
+		$model = $this->di->model("Model_Post");
+		$post = $model->get($id);
+
+		$num = $model->delete($post);
+
+		if ($num > 0)
+		{
+			$content['success'] = true;
+			$content['body'] = "Success";
+			$content['affected'] = $num;
+		}
+
+		$this->content = $content;
 	}
 
 }
