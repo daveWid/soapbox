@@ -2,7 +2,7 @@
 
 {{> logout}}
 
-<p><a href="{{#url}}admin/add{{/url}}" role="button">New Post</a></p>
+<p><a href="{{new_post_url}}" role="button">New Post</a></p>
 
 <table>
 	<thead>
@@ -18,8 +18,8 @@
 			<td><a href="{{permalink}}">{{title}}</a></td>
 			<td>{{date}}</td>
 			<td>
-				<a href="{{#url}}admin/edit{{/url}}/{{post_id}}">Edit</a> |
-				<a href="{{#url}}admin/delete{{/url}}/{{post_id}}" data-action="delete">Delete</a>
+				<a href="{{#admin}}edit{{/admin}}">Edit</a> |
+				<a href="{{#admin}}delete{{/admin}}" data-action="delete">Delete</a>
 			</td>
 		</tr>
 	{{/posts}}

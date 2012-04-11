@@ -3,13 +3,13 @@
 {{#has_posts}}
 {{#posts}}
 <article>
-	<h2><a href="{{link}}">{{title}}</a></h2>
+	<h2><a href="{{permalink}}">{{title}}</a></h2>
 
 	<div class="date">Posted: {{date}}</div>
 	{{#has_categories}}
 	<div class="categories">
 		{{#categories}}
-		<a href="{{link}}">{{display}}</a>
+		<a href="{{permalink}}">{{display}}</a>
 		{{/categories}}
 	</div>
 	{{/has_categories}}
@@ -19,7 +19,7 @@
 	</div>
 
 	<div class="read-more">
-		<a href="{{link}}">Full Post →</a>
+		<a href="{{permalink}}">Full Post →</a>
 	</div>
 </article>
 {{/posts}}
@@ -30,5 +30,5 @@
 
 
 <p class="archive">
-	<a href="{{#url}}archive{{/url}}">Archive →</a>
+	<a href="{{archive_url}}">Archive →</a>
 </p>

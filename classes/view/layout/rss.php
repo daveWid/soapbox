@@ -51,9 +51,9 @@ class View_Layout_RSS extends \Owl\Layout
 	 *
 	 * @return string 
 	 */
-	public function link()
+	public function permalink()
 	{
-		return URL::site("", true);
+		return Route::url("soapbox", array('index' => false), true);
 	}
 
 	/**

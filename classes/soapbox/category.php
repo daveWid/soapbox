@@ -12,8 +12,8 @@ class Soapbox_Category extends \Cactus\Entity
 	/**
 	 * A Relative link to the category page. 
 	 */
-	public function link()
+	public function permalink()
 	{
-		return URL::site("category/".$this->slug);
+		return Route::url('soapbox/category', array('category' => $this->slug));
 	}
 }

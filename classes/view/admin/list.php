@@ -50,6 +50,22 @@ class View_Admin_List extends Soapbox_View
 	}
 
 	/**
+	 * @return string  The logout url
+	 */
+	public function logout_url()
+	{
+		return Route::url("soapbox", array('action' => "logout"));
+	}
+
+	/**
+	 * @return string  The url to create a new post
+	 */
+	public function new_post_url()
+	{
+		return Route::url('soapbox/admin', array('action' => "add"));
+	}
+
+	/**
 	 * Adds the page title to the layout.
 	 *
 	 * @param \Owl\Layout $layout   The layout this content is added to

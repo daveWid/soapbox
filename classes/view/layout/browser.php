@@ -43,15 +43,19 @@ class View_Layout_Browser extends \Owl\Layout
 	}
 
 	/**
-	 * A lambda function to get the url relative to the site.
-	 *
-	 * @return Closure
+	 * @return string  The search url
 	 */
-	public function url()
+	public function search_url()
 	{
-		return function($url){
-			return URL::site($url);
-		};
+		return Route::url('soapbox', array('action' => "search"));
+	}
+
+	/**
+	 * @return string  The url to the archive page
+	 */
+	public function archive_url()
+	{
+		return Route::url("soapbox", array('action' => "archive"));
 	}
 
 	/**

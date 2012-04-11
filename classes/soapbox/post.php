@@ -28,16 +28,6 @@ class Soapbox_Post extends \Cactus\Entity
 	}
 
 	/**
-	 * The link to the full post.
-	 *
-	 * @return string
-	 */
-	public function link()
-	{
-		return URL::site($this->slug);
-	}
-
-	/**
 	 * A human readable date of when the post was posted.
 	 *
 	 * @param  string $format  The date format
@@ -86,7 +76,24 @@ class Soapbox_Post extends \Cactus\Entity
 	 */
 	public function permalink()
 	{
-		return URL::site($this->slug, true);
+		return Route::url('soapbox/post', array('slug' => $this->slug));
+	}
+
+	/**
+	 * Lamda function for getting administration routes...
+	 *
+	 * @return Closure
+	 */
+	public function admin()
+	{
+		$id = $this->post_id;
+
+		return function($action) use ($id){
+			return Route::url('soapbox/admin', array(
+				'action' => $action,
+				'id' => $id
+			));
+		};
 	}
 
 	/**
