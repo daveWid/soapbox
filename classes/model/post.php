@@ -55,8 +55,7 @@ class Model_Post extends \Cactus\Model
 		$object->last_modified = date("Y-m-d H:i:s");
 
 		// Now render the content.
-		include APPPATH."vendor".DIRECTORY_SEPARATOR."Markdown.php";
-		$md = new MarkdownExtra_Parser;
+		$md = new Soapbox_Markdown;
 		$object->html = $md->transform($object->source);
 
 		list($exerpt) = explode(PHP_EOL, $object->source);
@@ -79,8 +78,7 @@ class Model_Post extends \Cactus\Model
 		// See if we need to re-render the content or not....
 		if (array_key_exists('source', $object->modified()))
 		{
-			include APPPATH."vendor".DIRECTORY_SEPARATOR."Markdown.php";
-			$md = new MarkdownExtra_Parser;
+			$md = new Soapbox_Markdown;
 			$object->html = $md->transform($object->source);
 
 			list($exerpt) = explode(PHP_EOL, $object->source);
