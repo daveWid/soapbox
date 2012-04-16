@@ -72,7 +72,11 @@ class Soapbox_Markdown extends MarkdownExtra_Parser
 			$ext = trim($matches[2]);
 
 			// Pygments needs a temporary file....
-			$temp = tempnam("/tmp", "soapbox").".{$ext}";
+			$temp = tempnam("/tmp", "soapbox");
+			if ($ext !== "")
+			{
+				$temp .= ".{$ext}";
+			}
 			file_put_contents($temp, $matches[3]); // [3] is the code block
 			
 			// Run Pygmentize
